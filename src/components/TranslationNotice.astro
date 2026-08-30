@@ -1,0 +1,80 @@
+---
+const {
+  PostTitle = "TranslationFrom",
+  titleLink = "https://example.com",
+  postAuthor = "arstarstarstarst",
+  postAuthorLink = "https://example.com",
+  translator = "Hatsumi",
+  translatorLink = "https://example.com",
+} = Astro.props;
+---
+
+<style>
+  .notice {
+    border-left: 3px solid #aaa;
+    padding: 12px 16px;
+    margin: 28px 0;
+    background: #fafafa;
+    border-radius: 4px;
+  }
+
+  .notice .label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: #888;
+    margin-bottom: 6px;
+    display: block;
+    font-weight: 600;
+  }
+
+  .notice p {
+    margin: 4px 0;
+    font-size: 14px;
+    color: #444;
+  }
+</style>
+
+<article class="notice">
+  <label for="">Copyright | Translation Notice | Special Statement</label>
+  <p>
+    The CC BY-NC-SA 4.0 license stated in this blog’s footer applies solely to
+    original content published on this site, unless otherwise specified.
+  </p>
+  <p>
+    This article is a translation and therefore constitutes a derivative work of
+    the original text. In order to respect the copyright of the original work
+    and its rights holder, this translation is not licensed under the CC
+    BY-NC-SA 4.0 license. Any reproduction, redistribution, or adaptation of
+    this translated text requires separate permission from the relevant
+    copyright holder(s).
+  </p>
+  <label for="">Original Work:</label>
+  <p>
+    This article is translated from “<a href={titleLink}>{PostTitle}</a>” by <a
+      href={postAuthorLink}>{postAuthor}</a
+    >. Copyright in the original text remains with the original copyright
+    holder.
+  </p>
+  <label for="">Translation Information:</label>
+  <p>
+    Translated, reviewed, and published by <a href={translatorLink}
+      >{translator}</a
+    >. The translation intended to reflect the original author’s views only. Any
+    inaccuracies, omissions, or interpretative errors introduced in the
+    translation are the sole responsibility of the translator.
+  </p>
+  <label for="">Purpose of Publication:</label>
+  <p>
+    This translation is provided for non-commercial purposes such as personal
+    study, academic research, and cultural exchange only. This statement does
+    not constitute a license for reuse.
+  </p>
+  <label for="">Copyright Concerns:</label>
+  <p>
+    If you believe that this translation infringes upon your rights, please
+    contact us using the information below. We will respond promptly and take
+    appropriate action.
+  </p>
+  <label for="">ContactMe:</label>
+  <p>mail.sycamore587@passinbox.com</p>
+</article>
