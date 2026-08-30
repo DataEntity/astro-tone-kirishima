@@ -7,7 +7,7 @@
    ------------------------------------------------------------ */
 :root {
   /* Font Families */
-  --font-sans: system-ui, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-sans: 'Times New Roman', Times, 'PingFang SC', 'PingFang TC', 'Hiragino Sans GB', 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
   --font-mono: ui-monospace, 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
 
   /* Type Scale */
