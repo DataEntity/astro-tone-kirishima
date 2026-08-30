@@ -20,7 +20,7 @@ const config = {
     locale: 'en_US',
     dateLocale: 'en-US',
     title: 'Kirishima',
-    logoLabel: 'Tone',
+    logoLabel: 'KI',
     description: 'A blog about the life of Kirishima',
     author: 'Kirishima',
     /** Optional absolute or root-relative image URL for homepage/search/about social previews. */
