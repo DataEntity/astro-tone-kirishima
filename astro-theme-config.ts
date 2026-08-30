@@ -83,54 +83,53 @@ const config = {
   },
 
   social: {
-    website: 'https://hanityx.github.io/astro-tone/', // e.g. 'https://your-site.com'
-    email: '', // e.g. 'hello@your-site.com'
-    linkedin: '', // e.g. 'https://www.linkedin.com/in/yourhandle'
-    github: 'https://github.com/hanityx/astro-tone', // e.g. 'https://github.com/yourhandle'
+    website: 'https://blog.kirishima.dev',
+    email: '',
+    linkedin: '',
+    github: 'https://github.com/DataEntity',
   },
 
   about: {
     /** Profile image URL. Leave empty to use the text-only About layout. */
     profileImage: '',
-    name: 'Alex Morgan',
-    role: 'Writes about useful small tools and the notes behind them.',
-    location: 'Anywhere',
-    focus: 'Writing, small tools, and notes worth returning to.',
-    lead: 'Alex writes about small product decisions, interface craft, and the notes that make work easier to return to.',
-    headline: ['Made to', 'last.'],
-    statementLabel: 'Work',
-    statementTitle: 'Notes on making useful things.',
+    name: 'Kirishima',
+    role: '普通高中生',
+    location: '',
+    focus: '閱讀札記、論證拆解、還沒想完的念頭',
+    lead: '我是 Kirishima，普通高中生，隨便整點小愛好。開這個博客，主要是給閱讀和想法找一個能留下來的地方。',
+    headline: ['留下來，', '再拆一遍。'],
+    statementLabel: '關於我',
+    statementTitle: '不太相信記憶，也不太相信直覺。',
     statement:
-      'This page is intentionally spare: a short bio, a few links, and enough context for readers who want to know who is writing.',
-    careerLabel: 'Career',
-    careerHeading: 'Career timeline',
+      '我不太相信記憶，所以把閱讀留下來；也不太相信直覺，所以拆解論證結構。於此記錄思考碎片，方便之後回顧，以至於批判當時的想法。實際上只是一些亂七八糟思考的存放點，可能會有很多錯誤，也可能會有很多重複。',
+    careerLabel: '本站',
+    careerHeading: '關於本站與使用聲明',
     career: [
       {
-        period: 'Current',
-        title: 'Independent practice',
+        period: '內容',
+        title: '更像筆記本',
         description:
-          'Designing calm interfaces, writing field notes, and helping teams clarify product surfaces.',
+          '這裡會放閱讀札記、隨手記下的片段，以及一些還沒想完、但暫時不想丟掉的念頭。更新不固定，質量也不保證均勻，所以更像個人筆記本，而不是正式出版物。',
       },
       {
-        period: 'Selected',
-        title: 'Product systems',
+        period: '聲明',
+        title: 'CC BY-NC-SA 4.0',
         description:
-          'Worked across design systems, editorial tooling, and early-stage product foundations.',
-      },
-      {
-        period: 'Elsewhere',
-        title: 'Writing and reference',
-        description:
-          'Keeping a public archive of notes, examples, and references worth returning to.',
+          '本博客由 Kirishima 維護，默認採用 CC BY-NC-SA 4.0。涉及政治、宗教、翻譯學習作品等敏感話題的內容屬於未授權，請勿轉載。本人無強烈意識形態，旨在和平交流。',
       },
     ],
     interests: [
-      'Interface systems that stay quiet until needed',
-      'Writing as a way to keep product judgment visible',
-      'Tools and habits that make long work easier to resume',
+      '技术宅',
+      '维基人',
+      'manga愛好',
+      'homelab',
+      'Colemak-DH',
+      'WebDev',
+      'RSS',
+      '开源工具链',
     ],
-    interestsLabel: 'Interests',
-    interestsHeading: 'What the work keeps returning to',
+    interestsLabel: 'Tags',
+    interestsHeading: '不喜歡介紹自己，所以只留幾個詞。',
   },
 };
 

@@ -76,14 +76,22 @@ const profileLinks = [
           <p class="profile-role">{profileRole}</p>
         </div>
         <dl class="profile-meta">
-          <div>
-            <dt>Location</dt>
-            <dd>{profileLocation}</dd>
-          </div>
-          <div>
-            <dt>Focus</dt>
-            <dd>{profileFocus}</dd>
-          </div>
+          {
+            profileLocation && (
+              <div>
+                <dt>Location</dt>
+                <dd>{profileLocation}</dd>
+              </div>
+            )
+          }
+          {
+            profileFocus && (
+              <div>
+                <dt>Focus</dt>
+                <dd>{profileFocus}</dd>
+              </div>
+            )
+          }
           {
             profileLinks.length > 0 && (
               <div>
