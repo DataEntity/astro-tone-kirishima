@@ -1,0 +1,21 @@
+---
+title: 生日馬上到了
+pubDate: 2026-05-29
+author: Kirishima
+category: Vignettes
+# tags:
+#   - birthday
+#   - daily
+#   - solitude
+---
+
+import { Image } from "astro:assets";
+import birthdaySnacks from "../../../../../../assets/2026-05-29_233502.png";
+
+馬上過生日了才想到, 每年基本都是自己隨便買點零食過.
+
+但其實也不差, 至少有個正當理由吭哧吭哧吃零食了.
+
+0606 快到了wwwww
+
+<Image src={birthdaySnacks} alt="生日" loading="lazy" />

@@ -7,7 +7,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 import ImageLightbox from '../components/ImageLightbox.astro';
 import ScrollFocus from '../components/ScrollFocus.astro';
 import BaseLayout from './BaseLayout.astro';
-import { SITE_AUTHOR, SITE_LANG, SITE_TITLE } from '../consts';
+import { SITE_AUTHOR, SITE_DESCRIPTION, SITE_LANG, SITE_TITLE } from '../consts';
 import { getUiText } from '../ui';
 import { withBase } from '../utils/paths';
 import { serializeScriptJson } from '../utils/serialize-script-json';
@@ -28,6 +28,8 @@ const {
   relatedPosts = [],
 } = Astro.props;
 
+const pageDescription = description ?? SITE_DESCRIPTION;
+
 const tr = getUiText();
 const blogBase = withBase('/blog');
 
@@ -39,7 +41,7 @@ const jsonLd = serializeScriptJson({
   '@context': 'https://schema.org',
   '@type': 'Article',
   headline: title,
-  description,
+  ...(description && { description }),
   datePublished: pubDateISO,
   ...(updatedDateISO && { dateModified: updatedDateISO }),
   url: canonicalURL.href,
@@ -52,7 +54,7 @@ const jsonLd = serializeScriptJson({
 
 <BaseLayout
   title={title}
-  description={description}
+  description={pageDescription}
   image={heroImage}
   type="article"
   pubDate={pubDateISO}

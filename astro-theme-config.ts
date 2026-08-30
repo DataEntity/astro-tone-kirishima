@@ -13,16 +13,16 @@ type NavItem = {
 const config = {
   site: {
     /** Production origin, used for canonical links, sitemap, and Open Graph metadata. */
-    url: 'https://example.com',
+    url: 'https://blog.kirishima.dev',
     /** Subpath such as '/repo-name'. Keep empty when deploying at a domain root. */
     base: '',
     lang: 'en',
     locale: 'en_US',
     dateLocale: 'en-US',
-    title: 'Astro Tone',
+    title: 'Kirishima',
     logoLabel: 'Tone',
-    description: 'A minimal Astro theme for posts and notes.',
-    author: 'Alex Morgan',
+    description: 'A blog about the life of Kirishima',
+    author: 'Kirishima',
     /** Optional absolute or root-relative image URL for homepage/search/about social previews. */
     defaultOgImage: '/og.png',
   },

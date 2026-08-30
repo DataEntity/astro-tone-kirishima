@@ -1,0 +1,44 @@
+---
+title: "垃圾無意義小短文"
+pubDate: 2026-06-17T23:37:52+08:00
+author: Kirishima
+category: Vignettes
+# tags:
+#   - anxiety
+---
+
+import { Image } from "astro:assets";
+import fgfrghWRmvbSdavjgJbJBNBASDFNBMVC from "../../../../../../assets/2026-06-17-232152113517.jpg";
+import okayimnooormalllaaaaagainaaaaaaaaaaaaaaa from "../../../../../../assets/2026-06-17-232153113617.jpg";
+
+心情差起來感覺什麽都是錯的, 但也不是說這樣就沒法過了. 只是有點煩. 這 spotify 推送的都是什麽垃圾狗屎歌.
+
+<div class="img-row">
+  <Image
+    src={okayimnooormalllaaaaagainaaaaaaaaaaaaaaa}
+    alt="okayimnooormalllaaaaagainaaaaaaaaaaaaaaa"
+    height={510}
+  />
+  <Image
+    src={fgfrghWRmvbSdavjgJbJBNBASDFNBMVC}
+    alt="fgfrghWRmvbSdavjgJbJBNBASDFNBMVC"
+    height={510}
+  />
+</div>
+
+<style>{`
+  .img-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .img-row img {
+    display: block;
+    width: auto;
+    max-width: calc(50% - 0.375rem);
+    height: 510px;
+    object-fit: contain;
+  }
+`}</style>

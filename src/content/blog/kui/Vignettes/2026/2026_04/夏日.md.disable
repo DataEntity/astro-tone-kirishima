@@ -1,0 +1,16 @@
+---
+title: 夏日
+author: Aoi
+date: 2026-04-12
+# tags:
+#     - cat-Vignettes
+---
+
+<div class="img-photo">
+	<img src="https://dontalk.org/api/media/74" alt="去年の夏の走馬灯" loading="lazy">
+	<p class="img-photo__caption">去年の夏の走馬灯</p>
+</div>
+
+「我想活著，我還想和你一起走過好多個盛夏。」
+
+{% xpPlayer "https://dontalk.org/api/media/73", "ラブリーサマーちゃん - あなたは煙草　私はシャボン", "ラブリーサマーちゃん", "https://dontalk.org/api/media/71", "https://dontalk.org/api/media/72" %}

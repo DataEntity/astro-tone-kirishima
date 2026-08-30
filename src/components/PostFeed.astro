@@ -153,7 +153,7 @@ const Heading = headingLevel;
           class="feed-item"
           data-feed-item
           data-category={post.data.category ?? ''}
-          data-search={`${post.data.title} ${post.data.description} ${post.data.category ?? ''}`.toLocaleLowerCase()}
+          data-search={`${post.data.title} ${post.data.description ?? ''} ${post.data.category ?? ''}`.toLocaleLowerCase()}
           data-index={index}
         >
           <a href={withBase(`${basePath}/${postSlug(post.id)}/`)} class="feed-link">
