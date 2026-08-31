@@ -1,6 +1,6 @@
 ---
 title: "性"
-pubDate: 2026-08-13
+pubDate: 2026-09-01
 author: Kirishima
 # updatedDate: 2026-01-01
 category: Vignettes
