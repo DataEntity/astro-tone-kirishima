@@ -1,5 +1,5 @@
 ---
-title: "從一本沒讀完的《水滸傳》開始"
+title: "杂谈"
 pubDate: 2026-08-30
 author: Kirishima
 # updatedDate: 2026-01-01
