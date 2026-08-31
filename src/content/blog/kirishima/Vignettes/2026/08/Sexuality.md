@@ -4,7 +4,7 @@ pubDate: 2026-08-13
 author: Kirishima
 # updatedDate: 2026-01-01
 category: Vignettes
-heroImage: ../../../../../../assets/photos\2026-06-18_044257.jpg
+heroImage: ../../../../../../assets/photos/2026-06-18_044257.jpg
 ---
 
 我始終無法完成對性及其親密性裝置(apparatus of intimacy)的規範化內化;毋寧說,對二者的忌避傾向早已沉積為一種近乎前反思性的邊界維持機制,其運作方式更接近於對主體滲透可能性的預先封存,而非任何具體對象性的拒斥.相較之下,閱讀行為,知識攝取乃至任意性的事務填充,至少仍然構成一種注意力重新配置(reconfiguration of attention)的可能性,使意識免於被關係性結構持續召喚.
