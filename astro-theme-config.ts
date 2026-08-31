@@ -3,6 +3,13 @@ type NavItem = {
   href: string;
 };
 
+type SiteLicense = {
+  /** Short license name shown in the footer, e.g. 'CC BY-NC-SA 4.0'. */
+  label: string;
+  /** URL to the license deed. Leave empty to hide the license line in the footer. */
+  url: string;
+};
+
 /**
  * astro-theme-config.ts
  *
@@ -26,6 +33,12 @@ const config = {
     /** Optional absolute or root-relative image URL for homepage/search/about social previews. */
     defaultOgImage: '/og.png',
   },
+
+  /** Default content license shown in the site footer. */
+  license: {
+    label: 'CC BY-NC-SA 4.0',
+    url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
+  } satisfies SiteLicense,
 
   // The logo already links to `/`. Add items here if you want visible header links.
   // Example: [{ label: 'Blog', href: '/blog' }, { label: 'About', href: '/about' }]

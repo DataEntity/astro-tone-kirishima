@@ -5,13 +5,26 @@ import { withBase } from '../utils/paths';
 const today = new Date();
 const footerTitle = config.site.logoLabel || config.site.title;
 const footerLinks = config.footerNav.filter((item) => item.href !== '/');
+const { label: licenseLabel, url: licenseUrl } = config.license;
+const showLicense = Boolean(licenseLabel && licenseUrl);
 ---
 
 <footer class="site-footer">
   <div class="footer-inner">
     <p class="footer-copy">
-      &copy; {today.getFullYear()}
-      {footerTitle}.
+      &copy; {today.getFullYear()} {footerTitle}.
+      {
+        showLicense && (
+          <>
+            {' '}
+            Licensed under{' '}
+            <a href={licenseUrl} rel="license">
+              {licenseLabel}
+            </a>
+            .
+          </>
+        )
+      }
     </p>
     {
       footerLinks.length > 0 && (
@@ -52,6 +65,16 @@ const footerLinks = config.footerNav.filter((item) => item.href !== '/');
   font-size: var(--text-footnote);
   color: var(--label-tertiary);
   margin: 0;
+}
+
+.footer-copy a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.footer-copy a:hover {
+  color: var(--label-primary);
 }
 
 .footer-links {
