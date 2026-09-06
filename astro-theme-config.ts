@@ -97,7 +97,7 @@ const config = {
 
   social: {
     website: 'https://blog.kirishima.dev',
-    email: '',
+    email: 'aeschylus.dodgy050@passinbox.com',
     linkedin: '',
     github: 'https://github.com/DataEntity',
   },
@@ -142,7 +142,7 @@ const config = {
       '开源工具链',
     ],
     interestsLabel: 'Tags',
-    interestsHeading: '不喜歡介紹自己，所以只留幾個詞。',
+    interestsHeading: '不喜歡介紹自己，所以留幾個詞。',
   },
 };
 
