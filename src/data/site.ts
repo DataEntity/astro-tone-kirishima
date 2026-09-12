@@ -1,16 +1,16 @@
-const siteOrigin = (import.meta.env.SITE_URL ?? 'https://example.org').replace(/\/$/, '');
+const siteOrigin = (import.meta.env.SITE_URL ?? 'https://blog.kirishima.dev').replace(/\/$/, '');
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 const siteUrl = `${siteOrigin}${basePath}`;
 
 export const site = {
-  name: 'A Quiet Publication',
-  title: 'A Quiet Publication · 静态个人出版物模板',
-  description: '一个不绑定作者身份的写作、项目、研究与影像出版模板。',
+  name: 'Kirishima',
+  title: 'Kirishima',
+  description: 'A blog about the life of Kirishima',
   url: siteUrl,
   author: {
-    name: 'Site Author',
-    bio: '这里放置作者简介、长期关注的问题和公开写作方向。',
-    email: '',
+    name: 'Kirishima',
+    bio: '我是 Kirishima，普通高中生，随便整点小爱好。开这个博客，主要是给阅读和想法找一个能留下来的地方。',
+    email: 'aeschylus.dodgy050@passinbox.com',
   },
   locale: 'zh-cn',
   locales: ['zh-cn', 'en'] as const,
@@ -20,7 +20,10 @@ export const site = {
     name: 'CC BY-NC-SA 4.0',
     url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
   },
-  social: [] as Array<{ label: string; href: string }>,
+  social: [
+    { label: 'GitHub', href: 'https://github.com/DataEntity' },
+    { label: 'Website', href: 'https://blog.kirishima.dev' },
+  ] as Array<{ label: string; href: string }>,
   features: {
     search: true,
     favorites: true,

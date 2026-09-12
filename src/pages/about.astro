@@ -1,6 +1,116 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/site';
+
+const about = {
+  role: '普通高中生',
+  focus: '閱讀札記、論證拆解、還沒想完的念頭',
+  headline: ['留下來，', '再拆一遍。'],
+  statementTitle: '不太相信記憶，也不太相信直覺。',
+  statement:
+    '我不太相信記憶，所以把閱讀留下來；也不太相信直覺，所以拆解論證結構。於此記錄思考碎片，方便之後回顧，以至於批判當時的想法。實際上只是一些亂七八糟思考的存放點，可能會有很多錯誤，也可能會有很多重複。',
+  career: [
+    {
+      period: '內容',
+      title: '更像筆記本',
+      description:
+        '這裡會放閱讀札記、隨手記下的片段，以及一些還沒想完、但暫時不想丟掉的念頭。更新不固定，質量也不保證均勻，所以更像個人筆記本，而不是正式出版物。',
+    },
+    {
+      period: '聲明',
+      title: 'CC BY-NC-SA 4.0',
+      description:
+        '本博客由 Kirishima 維護，默認採用 CC BY-NC-SA 4.0。涉及政治、宗教、翻譯學習作品等敏感話題的內容屬於未授權，請勿轉載。本人無強烈意識形態，旨在和平交流。',
+    },
+  ],
+  interests: ['技术宅', '维基人', 'manga愛好', 'homelab', 'Colemak-DH', 'WebDev', 'RSS', '开源工具链'],
+};
 ---
-<BaseLayout title="关于 · Fourfold"><article class="page narrow"><p class="eyebrow">About</p><h1>你好，我是 {site.author.name}。</h1><p class="lead">{site.author.bio}</p><h2>这个站点是什么</h2><p>这里可以放你的职业方向、长期写作主题、项目经历和合作方式。Fourfold 把它们组织成一个可持续的个人出版物，而不是一页简历。</p><h2>公开边界</h2><p>公开内容应当经过必要的脱敏，不包含业务内部数据或他人的隐私。你可以在这里明确自己的授权、引用和联系方式。</p><h2>合作</h2><p>如果你提供咨询、顾问或写作服务，可以在此写清楚适合帮助什么问题，以及如何联系你。</p></article></BaseLayout>
-<style>.page{padding:5rem 0}.page h1{font-size:clamp(3rem,8vw,6rem);line-height:.95;letter-spacing:-.07em;margin:.5rem 0 2rem}.page h2{margin-top:3rem;font-size:1.5rem}.page p{max-width:40rem}.lead{font-size:1.5rem;color:var(--muted)}</style>
+
+<BaseLayout title={`关于 · ${site.name}`}>
+  <article class="page narrow">
+    <p class="eyebrow">About</p>
+    <h1>{about.headline[0]}{about.headline[1]}</h1>
+    <p class="lead">{site.author.bio}</p>
+    <p class="meta-line">{about.role} · {about.focus}</p>
+
+    <h2>{about.statementTitle}</h2>
+    <p>{about.statement}</p>
+
+    <h2>關於本站與使用聲明</h2>
+    {
+      about.career.map((item) => (
+        <section class="career">
+          <p class="eyebrow">{item.period}</p>
+          <h3>{item.title}</h3>
+          <p>{item.description}</p>
+        </section>
+      ))
+    }
+
+    <h2>不喜歡介紹自己，所以留幾個詞。</h2>
+    <ul class="tags">
+      {about.interests.map((tag) => <li>{tag}</li>)}
+    </ul>
+
+    {
+      site.author.email && (
+        <>
+          <h2>聯繫</h2>
+          <p>
+            <a href={`mailto:${site.author.email}`}>{site.author.email}</a>
+          </p>
+        </>
+      )
+    }
+  </article>
+</BaseLayout>
+
+<style>
+  .page {
+    padding: 5rem 0;
+  }
+  .page h1 {
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: -0.07em;
+    margin: 0.5rem 0 2rem;
+  }
+  .page h2 {
+    margin-top: 3rem;
+    font-size: 1.5rem;
+  }
+  .page h3 {
+    margin: 0.4rem 0 0.6rem;
+    font-size: 1.15rem;
+  }
+  .page p {
+    max-width: 40rem;
+  }
+  .lead {
+    font-size: 1.5rem;
+    color: var(--muted);
+  }
+  .meta-line {
+    color: var(--muted);
+    margin-top: -0.5rem;
+  }
+  .career {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+  }
+  .tags {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1rem;
+    margin: 1rem 0 0;
+  }
+  .tags li {
+    color: var(--accent);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.85rem;
+  }
+</style>

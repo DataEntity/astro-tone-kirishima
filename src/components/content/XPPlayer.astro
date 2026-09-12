@@ -1,0 +1,803 @@
+---
+const {
+  src,
+  title = "",
+  artist = "",
+  cover = "",
+  lrc = "",
+  fallbackCover = "/media/audio/no-album-art.png",
+} = Astro.props;
+
+const hasExplicitCover = Boolean(cover);
+const hasLrc = Boolean(lrc);
+const coverSrc = hasExplicitCover ? cover : fallbackCover;
+---
+
+{
+  src && (
+    <div
+      class="xp-player"
+      data-xp-player
+      data-cover-mode={hasExplicitCover ? "explicit" : "auto"}
+      data-fallback-cover={fallbackCover}
+      data-lrc={hasLrc ? lrc : undefined}
+    >
+      <div class="xp-player__cover">
+        <img
+          src={coverSrc}
+          alt={title || "Audio cover"}
+          loading="lazy"
+          data-cover-img
+        />
+      </div>
+      <div class="xp-player__panel">
+        <button type="button" class="xp-player__btn" aria-label="播放 / 暂停">
+          <span class="xp-player__icon">▶</span>
+        </button>
+        <div class="xp-player__meta">
+          {title && (
+            <div class="xp-player__title" title={title}>
+              {title}
+            </div>
+          )}
+          {artist && (
+            <div class="xp-player__artist" title={artist}>
+              {artist}
+            </div>
+          )}
+        </div>
+        <div class="xp-player__time">
+          <span class="xp-player__current">00:00</span>
+          <span class="xp-player__divider">/</span>
+          <span class="xp-player__duration">--:--</span>
+        </div>
+        {hasLrc && (
+          <button
+            type="button"
+            class="xp-player__lrc-toggle"
+            aria-label="显示/隐藏歌词"
+            title="显示/隐藏歌词"
+          >
+            <span class="xp-player__lrc-icon">☰</span>
+          </button>
+        )}
+      </div>
+      <div
+        class="xp-player__progress"
+        role="slider"
+        aria-valuenow="0"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-label="播放进度"
+      >
+        <div class="xp-player__progress-bar">
+          <span />
+        </div>
+      </div>
+      {hasLrc && (
+        <div class="xp-player__lyrics" data-lrc-container>
+          <div
+            class="xp-player__lyrics-progress"
+            role="progressbar"
+            aria-valuenow="0"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
+            <div class="xp-player__lyrics-progress-bar" />
+          </div>
+          <div class="xp-player__lyrics-scroll">
+            <div class="xp-player__lyrics-content" />
+          </div>
+        </div>
+      )}
+      <audio preload="metadata" src={src} />
+    </div>
+  )
+}
+
+<script is:inline>
+  const xpPlayerConfig = {
+    fallbackCover: "/media/audio/no-album-art.png",
+    labels: {
+      currentTime: "00:00",
+      duration: "--:--",
+    },
+    icons: {
+      play: "▶",
+      pause: "❚❚",
+    },
+  };
+
+  const formatXPTime = (secs) => {
+    if (!Number.isFinite(secs)) return "--:--";
+    const minutes = Math.floor(secs / 60)
+      .toString()
+      .padStart(2, "0");
+    const seconds = Math.floor(secs % 60)
+      .toString()
+      .padStart(2, "0");
+    return `${minutes}:${seconds}`;
+  };
+
+  const bytesToBase64 = (bytes = []) => {
+    const chunkSize = 0x8000;
+    let binary = "";
+    for (let i = 0; i < bytes.length; i += chunkSize) {
+      const chunk = bytes.subarray
+        ? bytes.subarray(i, i + chunkSize)
+        : bytes.slice(i, i + chunkSize);
+      binary += String.fromCharCode.apply(null, chunk);
+    }
+    return window.btoa(binary);
+  };
+
+  let jsMediaTagsPromise = null;
+  const loadJsMediaTags = () => {
+    if (jsMediaTagsPromise) return jsMediaTagsPromise;
+    if (window.jsmediatags) return Promise.resolve(window.jsmediatags);
+
+    jsMediaTagsPromise = new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src =
+        "https://cdn.jsdelivr.net/npm/jsmediatags@3.9.7/dist/jsmediatags.min.js";
+      script.onload = () => resolve(window.jsmediatags);
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+
+    return jsMediaTagsPromise;
+  };
+
+  const ensureCoverArtwork = (player, audio) => {
+    const coverImg = player.querySelector("[data-cover-img]");
+    if (!coverImg) return;
+    const fallbackCover =
+      player.dataset.fallbackCover || xpPlayerConfig.fallbackCover;
+    const coverMode = player.dataset.coverMode || "explicit";
+    const setCover = (src) => {
+      coverImg.src = src || fallbackCover;
+    };
+    coverImg.addEventListener(
+      "error",
+      () => {
+        if (coverImg.src !== fallbackCover) {
+          setCover(fallbackCover);
+        }
+      },
+      { once: true },
+    );
+    if (coverMode !== "auto") {
+      if (!coverImg.getAttribute("src")) {
+        setCover(fallbackCover);
+      }
+      return;
+    }
+    if (!audio?.src) {
+      setCover(fallbackCover);
+      return;
+    }
+
+    loadJsMediaTags()
+      .then((jsmediatags) => {
+        jsmediatags.read(audio.currentSrc || audio.src, {
+          onSuccess: ({ tags }) => {
+            const picture = tags?.picture;
+            if (picture?.data?.length) {
+              try {
+                const base64 = bytesToBase64(picture.data);
+                setCover(`data:${picture.format};base64,${base64}`);
+              } catch (error) {
+                console.warn("xpPlayer cover decode failed", error);
+                setCover(fallbackCover);
+              }
+            } else {
+              setCover(fallbackCover);
+            }
+          },
+          onError: () => setCover(fallbackCover),
+        });
+      })
+      .catch(() => setCover(fallbackCover));
+  };
+
+  const parseLRC = (lrcText) => {
+    const lines = lrcText.split("\n");
+    const lyrics = [];
+    const timeRegex = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/g;
+
+    lines.forEach((line) => {
+      const matches = [...line.matchAll(timeRegex)];
+      if (matches.length > 0) {
+        const text = line.replace(timeRegex, "").trim();
+        if (text) {
+          matches.forEach((match) => {
+            const minutes = parseInt(match[1], 10);
+            const seconds = parseInt(match[2], 10);
+            const milliseconds = parseInt(match[3].padEnd(3, "0"), 10);
+            const time = minutes * 60 + seconds + milliseconds / 1000;
+            lyrics.push({ time, text });
+          });
+        }
+      }
+    });
+
+    return lyrics.sort((a, b) => a.time - b.time);
+  };
+
+  const binarySearchLyric = (lyrics, currentTime) => {
+    let left = 0;
+    let right = lyrics.length - 1;
+    let result = -1;
+
+    while (left <= right) {
+      const mid = Math.floor((left + right) / 2);
+      if (lyrics[mid].time <= currentTime) {
+        result = mid;
+        left = mid + 1;
+      } else {
+        right = mid - 1;
+      }
+    }
+
+    return result;
+  };
+
+  const bootstrapPlayers = () => {
+    const players = document.querySelectorAll("[data-xp-player]");
+    if (!players.length) return;
+    let activeAudio = null;
+    players.forEach((player) => {
+      if (player.dataset.xpPlayerReady === "true") return;
+      player.dataset.xpPlayerReady = "true";
+      const audio = player.querySelector("audio");
+      const btn = player.querySelector(".xp-player__btn");
+      const icon = player.querySelector(".xp-player__icon");
+      const progress = player.querySelector(".xp-player__progress");
+      const bar = player.querySelector(".xp-player__progress-bar span");
+      const currentEl = player.querySelector(".xp-player__current");
+      const durationEl = player.querySelector(".xp-player__duration");
+      if (!audio || !btn || !icon || !progress || !bar) return;
+      ensureCoverArtwork(player, audio);
+
+      const lrcPath = player.dataset.lrc;
+      const lrcToggle = player.querySelector(".xp-player__lrc-toggle");
+      const lyricsContainer = player.querySelector("[data-lrc-container]");
+      const lyricsContent = player.querySelector(".xp-player__lyrics-content");
+      const lyricsProgress = player.querySelector(
+        ".xp-player__lyrics-progress",
+      );
+      const lyricsProgressBar = player.querySelector(
+        ".xp-player__lyrics-progress-bar",
+      );
+      let parsedLyrics = [];
+      let currentLyricIndex = -1;
+      let lyricLinesCache = null;
+      let rafId = null;
+
+      if (lrcPath && lrcToggle && lyricsContainer && lyricsContent) {
+        lrcToggle.addEventListener("click", () => {
+          const isVisible = player.dataset.lyricsVisible === "true";
+          player.dataset.lyricsVisible = isVisible ? "false" : "true";
+          if (!isVisible && parsedLyrics.length === 0) {
+            lyricsContent.innerHTML =
+              '<div class="xp-player__lyrics-loading">加载歌词中...</div>';
+            fetch(lrcPath)
+              .then((res) => res.text())
+              .then((lrcText) => {
+                parsedLyrics = parseLRC(lrcText);
+                if (parsedLyrics.length > 0) {
+                  const spacer = '<div style="height: 100px;"></div>';
+                  lyricsContent.innerHTML =
+                    spacer +
+                    parsedLyrics
+                      .map(
+                        (lyric, index) =>
+                          `<div class="xp-player__lyric-line" data-time="${lyric.time}" data-index="${index}">${lyric.text}</div>`,
+                      )
+                      .join("") +
+                    spacer;
+                  lyricLinesCache = lyricsContent.querySelectorAll(
+                    ".xp-player__lyric-line",
+                  );
+                  lyricLinesCache.forEach((line) => {
+                    line.addEventListener("click", () => {
+                      const time = parseFloat(line.dataset.time);
+                      audio.currentTime = time;
+                      if (audio.paused) {
+                        audio.play();
+                      }
+                    });
+                  });
+                } else {
+                  lyricsContent.innerHTML =
+                    '<div class="xp-player__lyrics-error">歌词格式错误</div>';
+                }
+              })
+              .catch(() => {
+                lyricsContent.innerHTML =
+                  '<div class="xp-player__lyrics-error">加载歌词失败</div>';
+              });
+          }
+        });
+
+        if (lyricsProgress) {
+          lyricsProgress.addEventListener("click", (event) => {
+            if (!audio.duration) return;
+            const rect = lyricsProgress.getBoundingClientRect();
+            const percent = Math.min(
+              Math.max((event.clientX - rect.left) / rect.width, 0),
+              1,
+            );
+            audio.currentTime = percent * audio.duration;
+            if (audio.paused) {
+              audio.play();
+            }
+          });
+        }
+      }
+
+      const updateLyrics = () => {
+        if (parsedLyrics.length === 0 || !lyricsContent || !lyricLinesCache)
+          return;
+        const currentTime = audio.currentTime;
+        const duration = audio.duration || 0;
+
+        if (lyricsProgressBar && duration) {
+          const percent = (currentTime / duration) * 100;
+          lyricsProgressBar.style.width = `${percent}%`;
+          if (lyricsProgress) {
+            lyricsProgress.setAttribute("aria-valuenow", Math.round(percent));
+            lyricsProgress.setAttribute("aria-valuemax", 100);
+          }
+        }
+
+        const newIndex = binarySearchLyric(parsedLyrics, currentTime);
+
+        if (newIndex !== currentLyricIndex) {
+          currentLyricIndex = newIndex;
+          const lyricLines = lyricsContent.querySelectorAll(
+            ".xp-player__lyric-line",
+          );
+          lyricLines.forEach((line, index) => {
+            line.classList.remove("active", "passed");
+            if (index === currentLyricIndex) {
+              line.classList.add("active");
+              const scrollContainer = lyricsContainer.querySelector(
+                ".xp-player__lyrics-scroll",
+              );
+              if (scrollContainer) {
+                requestAnimationFrame(() => {
+                  const containerRect = scrollContainer.getBoundingClientRect();
+                  const lineRect = line.getBoundingClientRect();
+                  const containerCenter =
+                    containerRect.top + containerRect.height / 2;
+                  const lineCenter = lineRect.top + lineRect.height / 2;
+                  const scrollOffset = lineCenter - containerCenter;
+                  const currentScroll = scrollContainer.scrollTop;
+                  const targetScroll = Math.max(
+                    0,
+                    currentScroll + scrollOffset,
+                  );
+
+                  scrollContainer.scrollTo({
+                    top: targetScroll,
+                    behavior: "smooth",
+                  });
+                });
+              }
+            } else if (index < currentLyricIndex) {
+              line.classList.add("passed");
+            }
+          });
+        }
+      };
+
+      const pauseOthers = () => {
+        if (activeAudio && activeAudio !== audio) {
+          activeAudio.pause();
+        }
+        activeAudio = audio;
+      };
+
+      const syncState = () => {
+        if (rafId) return;
+
+        rafId = requestAnimationFrame(() => {
+          const duration = audio.duration || 0;
+          const current = audio.currentTime || 0;
+          const percent = duration ? (current / duration) * 100 : 0;
+          bar.style.width = `${percent}%`;
+          currentEl && (currentEl.textContent = formatXPTime(current));
+          if (durationEl && duration && durationEl.textContent === "--:--") {
+            durationEl.textContent = formatXPTime(duration);
+          }
+          updateLyrics();
+          rafId = null;
+        });
+      };
+
+      btn.addEventListener("click", () => {
+        if (audio.paused) {
+          pauseOthers();
+          audio.play();
+        } else {
+          audio.pause();
+        }
+      });
+
+      audio.addEventListener("play", () => {
+        icon.textContent = xpPlayerConfig.icons.pause;
+        btn.setAttribute("aria-pressed", "true");
+      });
+
+      audio.addEventListener("pause", () => {
+        icon.textContent = xpPlayerConfig.icons.play;
+        btn.setAttribute("aria-pressed", "false");
+      });
+
+      audio.addEventListener("timeupdate", syncState);
+      audio.addEventListener("loadedmetadata", () => {
+        durationEl && (durationEl.textContent = formatXPTime(audio.duration));
+        syncState();
+      });
+      audio.addEventListener("ended", () => {
+        audio.currentTime = 0;
+        audio.pause();
+        syncState();
+      });
+
+      progress.addEventListener("click", (event) => {
+        if (!audio.duration) return;
+        const rect = progress.getBoundingClientRect();
+        const percent = Math.min(
+          Math.max((event.clientX - rect.left) / rect.width, 0),
+          1,
+        );
+        audio.currentTime = percent * audio.duration;
+        syncState();
+      });
+    });
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bootstrapPlayers, {
+      once: true,
+    });
+  } else {
+    bootstrapPlayers();
+  }
+
+  document.addEventListener("astro:page-load", bootstrapPlayers);
+</script>
+
+<style>
+  .xp-player {
+    margin: 1.75rem 0;
+    padding: 0.9rem 1rem 0.65rem;
+    border-radius: 14px;
+    border: 1px solid #d6d6d6;
+    background: linear-gradient(180deg, #fff 0%, #f7f7f7 100%);
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.04);
+    max-width: min(640px, 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .xp-player__row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .xp-player__cover {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    background: #ebebeb;
+    overflow: hidden;
+  }
+
+  .xp-player__cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .xp-player__panel {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+  }
+
+  .xp-player__btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid #4a4a4a;
+    background: #1c1c1c;
+    color: #f6f6f6;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition:
+      transform 0.1s ease,
+      background 0.15s ease;
+  }
+
+  .xp-player__btn:hover {
+    background: #2b2b2b;
+  }
+
+  .xp-player__btn:active {
+    transform: scale(0.94);
+  }
+
+  .xp-player__meta {
+    flex: 1;
+    font-family:
+      "Helvetica Neue",
+      "Segoe UI",
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont;
+    min-width: 0;
+  }
+
+  .xp-player__title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #0f0f0f;
+    margin-bottom: 0.1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .xp-player__artist {
+    font-size: 0.83rem;
+    color: #626262;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .xp-player__time {
+    font-variant-numeric: tabular-nums;
+    font-size: 0.83rem;
+    color: #2a2a2a;
+    display: flex;
+    gap: 0.2rem;
+    align-items: center;
+  }
+
+  .xp-player__progress {
+    width: 100%;
+    position: relative;
+    height: 4px;
+    border-radius: 99px;
+    background: #e6e6e6;
+    cursor: pointer;
+  }
+
+  .xp-player__progress-bar span {
+    display: block;
+    height: 100%;
+    width: 0;
+    border-radius: inherit;
+    background: #2b2b2b;
+    transition: width 0.1s linear;
+    will-change: width;
+  }
+
+  .xp-player__progress:active {
+    background: #c4c4c4;
+  }
+
+  .xp-player__row + .xp-player__progress {
+    margin-top: 0.4rem;
+  }
+
+  .xp-player__lrc-toggle {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid #d6d6d6;
+    background: #fff;
+    color: #4a4a4a;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .xp-player__lrc-toggle:hover {
+    background: #f4f4f4;
+    border-color: #b8b8b8;
+  }
+
+  .xp-player__lrc-toggle:active {
+    transform: scale(0.95);
+  }
+
+  .xp-player[data-lyrics-visible="true"] .xp-player__lrc-toggle {
+    background: #2b2b2b;
+    color: #fff;
+    border-color: #4a4a4a;
+  }
+
+  .xp-player__lyrics {
+    display: none;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+      margin-top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-top: 1px solid transparent;
+    border-radius: 0 0 10px 10px;
+    background: linear-gradient(180deg, #fafafa 0%, #f5f5f5 100%);
+    content-visibility: auto;
+    contain: layout style paint;
+  }
+
+  .xp-player[data-lyrics-visible="true"] .xp-player__lyrics {
+    display: block;
+    max-height: 320px;
+    margin-top: 0.75rem;
+    opacity: 1;
+    border-top-color: #e8e8e8;
+    will-change: max-height, opacity;
+  }
+
+  .xp-player__lyrics-progress {
+    width: 100%;
+    height: 3px;
+    background: #e8e8e8;
+    border-radius: 2px;
+    position: relative;
+    cursor: pointer;
+    transition: height 0.2s ease;
+  }
+
+  .xp-player__lyrics-progress:hover {
+    height: 4px;
+  }
+
+  .xp-player__lyrics-progress-bar {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, #2b2b2b 0%, #1a1a1a 100%);
+    border-radius: inherit;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+    will-change: width;
+  }
+
+  .xp-player__lyrics-scroll {
+    height: 280px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding: 1.5rem 1rem 2rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.25) rgba(0, 0, 0, 0.06);
+    scroll-behavior: smooth;
+  }
+
+  .xp-player__lyrics-scroll::-webkit-scrollbar {
+    width: 8px;
+    -webkit-appearance: none;
+  }
+
+  .xp-player__lyrics-scroll::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 4px;
+    margin: 10px 0;
+  }
+
+  .xp-player__lyrics-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: background 0.2s ease;
+  }
+
+  .xp-player__lyrics-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.35);
+  }
+
+  .xp-player__lyrics-content {
+    text-align: center;
+    font-family:
+      "Helvetica Neue",
+      "Segoe UI",
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont;
+    padding: 0 1rem;
+  }
+
+  .xp-player__lyric-line {
+    padding: 0.55rem 1rem;
+    margin: 0.2rem 0;
+    font-size: 0.94rem;
+    color: #b0b0b0;
+    transition:
+      color 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      opacity 0.35s ease,
+      font-weight 0.25s ease;
+    cursor: pointer;
+    border-radius: 8px;
+    line-height: 1.65;
+    letter-spacing: 0.01em;
+    font-weight: 400;
+    opacity: 0.55;
+    contain: layout style paint;
+  }
+
+  .xp-player__lyric-line:hover {
+    background: rgba(0, 0, 0, 0.03);
+    color: #808080;
+    opacity: 0.8;
+  }
+
+  .xp-player__lyric-line.active {
+    color: #1a1a1a;
+    font-weight: 650;
+    opacity: 1;
+  }
+
+  .xp-player__lyric-line.passed {
+    color: #d0d0d0;
+    opacity: 0.38;
+  }
+
+  .xp-player__lyrics-loading,
+  .xp-player__lyrics-error {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    font-size: 0.88rem;
+    animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .xp-player__lyrics-loading {
+    color: #999;
+  }
+
+  .xp-player__lyrics-error {
+    color: #d44;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 599px) {
+    .xp-player__row {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .xp-player__panel {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .xp-player__progress {
+      margin-top: 0.2rem;
+    }
+  }
+</style>

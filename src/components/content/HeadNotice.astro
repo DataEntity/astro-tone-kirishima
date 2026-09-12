@@ -1,0 +1,65 @@
+---
+type NoticeType = "translation" | "repost" | "controversial" | "media";
+
+interface Props {
+  type?: NoticeType;
+}
+
+const { type = "translation" } = Astro.props;
+
+const notices: Record<NoticeType, { title: string; text: string; zh: string }> =
+  {
+    translation: {
+      title: "Translation Notice",
+      text: "This article is a translated work. It is provided for non-commercial study, research, and cultural exchange only, and may not fully represent the original author’s intended meaning.",
+      zh: "本文為翻譯作品，僅供非商業性的學習、研究與文化交流使用，譯文可能無法完全代表原作者原意。",
+    },
+    repost: {
+      title: "Repost Notice",
+      text: "This article is reposted or republished from another source. Copyright and related rights remain with the original author or rights holder unless otherwise stated.",
+      zh: "本文為轉載或再發布內容，除非另有說明，原文著作權及相關權利仍歸原作者或權利方所有。",
+    },
+    controversial: {
+      title: "Content Notice",
+      text: "This article may involve controversial, sensitive, or disputed topics. The content is provided for reference and discussion, and does not necessarily represent the views of this site.",
+      zh: "本文可能涉及具爭議性、敏感或存在分歧的議題，內容僅供參考與討論，不必然代表本站立場。",
+    },
+    media: {
+      title: "Media Notice",
+      text: "This blog may include images, audio, video, or other media whose source or copyright ownership is unclear, or whose use may not have been authorized. If you are the rights holder and believe any material has been used improperly, please contact the site maintainer.",
+      zh: "本博客內可能含有來源或版權歸屬不明、或未經授權使用的圖片、音頻、視頻或其他媒體內容。若您為相關權利人並認為內容使用不當，請聯繫站點維護者。",
+    },
+  };
+
+const notice = notices[type] ?? notices.translation;
+---
+
+<style>
+  .head-notice {
+    border-left: 4px solid #999;
+    padding: 12px 16px;
+    margin: 20px 0 28px;
+    background: #fafafa;
+    border-radius: 6px;
+  }
+
+  .head-notice strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #333;
+  }
+
+  .head-notice p {
+    margin: 4px 0;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #555;
+  }
+</style>
+
+<aside class="head-notice">
+  <strong>{notice.title}</strong>
+  <p>{notice.text}</p>
+  <p>{notice.zh}</p>
+</aside>

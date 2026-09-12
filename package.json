@@ -6,12 +6,14 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "check": "npm run validate:content && astro check",
     "validate:content": "node scripts/validate-content.mjs",
-    "build": "npm run validate:content && astro check && astro build",
+    "build": "npm run validate:content && astro build",
+    "check": "npm run validate:content && astro check",
+    "migrate:tone": "node scripts/migrate-from-tone.mjs",
     "preview": "astro preview"
   },
   "dependencies": {
+    "@astrojs/mdx": "^8.0.1",
     "@astrojs/rss": "latest",
     "@astrojs/sitemap": "latest",
     "astro": "latest",
