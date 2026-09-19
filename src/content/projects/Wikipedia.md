@@ -6,6 +6,7 @@ publishedAt: 2026-08-20
 status: active
 type: template
 tags: [wikipedia, wikimedia, maintenance]
+externalUrl: https://zh.wikipedia.org/wiki/User:Muersault
 draft: false
 ---
 
@@ -13,7 +14,7 @@ draft: false
 
 <p class="dossier-lead">一项持续进行的长期工作，主要参与维基百科条目的维护、内容整理、来源补充、格式修订以及相关 Wikimedia 项目的编辑工作。</p>
 
-<p class="dossier-aside">这里记录工作的范围、正在处理的事项、阶段性计划与值得保留的维护记录。与单次编辑不同，这项工作更接近一种长期的志愿维护：通过持续的小规模编辑，改善条目的可读性、准确性、结构与可维护性。</p>
+<p class="dossier-aside">维基百科用户页：<a href="https://zh.wikipedia.org/wiki/User:Muersault" rel="me noopener">User:Muersault</a>。这里记录工作的范围、正在处理的事项、阶段性计划与值得保留的维护记录。与单次编辑不同，这项工作更接近一种长期的志愿维护：通过持续的小规模编辑，改善条目的可读性、准确性、结构与可维护性。</p>
 
 <section class="dossier-section">
 <h2>工作范围</h2>
