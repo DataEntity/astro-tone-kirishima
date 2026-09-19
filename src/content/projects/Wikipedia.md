@@ -6,7 +6,7 @@ publishedAt: 2026-08-20
 status: active
 type: template
 tags: [wikipedia, wikimedia, maintenance]
-draft: true
+draft: false
 ---
 
 <div class="dossier">

@@ -6,7 +6,7 @@ publishedAt: 2026-08-20
 status: active
 type: template
 tags: [Astro, 开源, 个人网站]
-draft: false
+draft: true
 ---
 
 Fourfold 是一个可迁移的 Astro starter。它把站点品牌、内容集合和页面能力分开，方便你在不重写组件的情况下替换为自己的博客。
