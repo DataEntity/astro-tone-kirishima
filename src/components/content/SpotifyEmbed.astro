@@ -1,0 +1,77 @@
+---
+type SpotifyKind = "playlist" | "album" | "track" | "artist" | "episode" | "show";
+
+interface Props {
+  /** Spotify ID，例如 playlist / album / track 的短 ID */
+  id?: string;
+  /** open.spotify.com 或 embed 完整链接；有 id 时优先用 id */
+  src?: string;
+  type?: SpotifyKind;
+  /** 嵌入高度；playlist/album 常用 352，compact 可用 152 */
+  height?: number | string;
+  /** Spotify theme=0 为深色 */
+  theme?: "light" | "dark";
+  title?: string;
+  class?: string;
+}
+
+const {
+  id,
+  src,
+  type = "playlist",
+  height = 352,
+  theme = "light",
+  title = "Spotify playlist",
+  class: className = "",
+} = Astro.props;
+
+function parseSpotifyInput(input: string): { kind: SpotifyKind; id: string } | null {
+  const match = input.match(
+    /(?:open\.spotify\.com\/(?:embed\/)?|spotify:)(playlist|album|track|artist|episode|show)[/:]([A-Za-z0-9]+)/i,
+  );
+  if (!match) return null;
+  return {
+    kind: match[1].toLowerCase() as SpotifyKind,
+    id: match[2],
+  };
+}
+
+const parsed = src ? parseSpotifyInput(src) : null;
+const kind = (id ? type : parsed?.kind) ?? type;
+const spotifyId = id ?? parsed?.id;
+
+const embedSrc = spotifyId
+  ? `https://open.spotify.com/embed/${kind}/${spotifyId}?utm_source=generator${
+      theme === "dark" ? "&theme=0" : ""
+    }`
+  : null;
+---
+
+{
+  embedSrc && (
+    <div class:list={["spotify-embed", className]}>
+      <iframe
+        title={title}
+        style={`border-radius:12px;width:100%;height:${height}px;border:0;`}
+        src={embedSrc}
+        width="100%"
+        height={height}
+        allowfullscreen
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"
+      />
+    </div>
+  )
+}
+
+<style>
+  .spotify-embed {
+    margin: 1.5rem 0;
+    max-width: 100%;
+  }
+
+  .spotify-embed iframe {
+    display: block;
+    max-width: 100%;
+  }
+</style>
