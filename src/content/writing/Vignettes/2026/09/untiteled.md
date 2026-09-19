@@ -8,7 +8,7 @@ tags:
   - Vignettes
 featured: false
 draft: false
-ogImage: /assets/photos/sz-beraud_-_trois_personnages_dans_un_cafe_vers_1890.webp
+ogImage: /assets/img/20260920045119.jpg
 ---
 
 寫點什麼,这篇就作为杂谈了.说是杂谈,但也只是临时想写的内容.人总到凌晨才有灵感.
