@@ -1,6 +1,6 @@
 ---
-title: "维基百科志愿维护"
-description: "长期进行的维基百科条目维护、内容整理与相关 Wikimedia 项目工作记录"
+title: "維基百科志願維護"
+description: "長期進行的維基百科條目維護、內容整理與相關 Wikimedia 項目工作記錄"
 locale: zh-cn
 publishedAt: 2026-08-20
 status: active
@@ -12,69 +12,69 @@ draft: false
 
 <div class="dossier">
 
-<p class="dossier-lead">一项持续进行的长期工作，主要参与维基百科条目的维护、内容整理、来源补充、格式修订以及相关 Wikimedia 项目的编辑工作。</p>
+<p class="dossier-lead">一項持續進行的長期工作，主要參與維基百科條目的維護、內容整理、來源補充、格式修訂以及相關 Wikimedia 項目的編輯工作。</p>
 
-<p class="dossier-aside">维基百科用户页：<a href="https://zh.wikipedia.org/wiki/User:Muersault" rel="me noopener">User:Muersault</a>。这里记录工作的范围、正在处理的事项、阶段性计划与值得保留的维护记录。与单次编辑不同，这项工作更接近一种长期的志愿维护：通过持续的小规模编辑，改善条目的可读性、准确性、结构与可维护性。</p>
+<p class="dossier-aside">維基百科用戶頁：<a href="https://zh.wikipedia.org/wiki/User:Muersault" rel="me noopener">User:Muersault</a>。這裏記錄工作的範圍、正在處理的事項、階段性計劃與值得保留的維護記錄。與單次編輯不同，這項工作更接近一種長期的志願維護：通過持續的小規模編輯，改善條目的可讀性、準確性、結構與可維護性。</p>
 
 <section class="dossier-section">
-<h2>工作范围</h2>
-<p>目前主要关注以下几类工作：</p>
+<h2>工作範圍</h2>
+<p>目前主要關注以下幾類工作：</p>
 <ul class="dossier-list">
-<li>条目文字与结构的整理</li>
-<li>来源、注释及参考文献的补充与规范化</li>
-<li>维基标记、模板及页面结构的修订</li>
-<li>条目章节之间的内容平衡与重复内容清理</li>
-<li>翻译及跨语言资料的整理</li>
-<li>文学作品及其相关主题条目的维护</li>
-<li>讨论页、编辑摘要及维护性信息的整理</li>
-<li>Wikimedia Commons、Wikisource 等相关项目的协作与维护</li>
+<li>條目文字與結構的整理</li>
+<li>來源、註釋及參考文獻的補充與規範化</li>
+<li>維基標記、模板及頁面結構的修訂</li>
+<li>條目章節之間的內容平衡與重複內容清理</li>
+<li>翻譯及跨語言資料的整理</li>
+<li>文學作品及其相關主題條目的維護</li>
+<li>討論頁、編輯摘要及維護性信息的整理</li>
+<li>Wikimedia Commons、Wikisource 等相關項目的協作與維護</li>
 </ul>
-<p class="dossier-muted">重点并不在于大量制造编辑次数，而在于处理实际存在的问题，并尽量使修改具有可验证性和长期维护价值。</p>
+<p class="dossier-muted">重點並不在於大量製造編輯次數，而在於處理實際存在的問題，並儘量使修改具有可驗證性和長期維護價值。</p>
 </section>
 
 <section class="dossier-section">
-<h2>当前工作</h2>
-<p>目前以维基百科的长期维护为主，同时逐步整理个人的编辑方法与工作记录。</p>
-<p>其中包括对文学作品条目的内容修订、资料核查、参考文献整理以及页面结构调整。对于较复杂的条目，会先整理资料与问题，再进行修改，以减少无依据扩写和重复劳动。</p>
-<p>此外，也会关注不同语言版本之间的内容差异，在必要时参考其他语言维基百科、Wikisource 以及 Wikimedia Commons 中的资料。</p>
+<h2>當前工作</h2>
+<p>目前以維基百科的長期維護為主，同時逐步整理個人的編輯方法與工作記錄。</p>
+<p>其中包括對文學作品條目的內容修訂、資料核查、參考文獻整理以及頁面結構調整。對於較複雜的條目，會先整理資料與問題，再進行修改，以減少無依據擴寫和重複勞動。</p>
+<p>此外，也會關注不同語言版本之間的內容差異，在必要時參考其他語言維基百科、Wikisource 以及 Wikimedia Commons 中的資料。</p>
 </section>
 
 <section class="dossier-section">
-<h2>工作原则</h2>
+<h2>工作原則</h2>
 <ol class="dossier-principles">
-<li><strong>可验证性</strong><span>重要事实尽可能建立在可靠、可查证的来源之上</span></li>
-<li><strong>中立性</strong><span>区分资料本身、来源观点与编辑者的解释，不主动加入个人立场</span></li>
-<li><strong>克制编辑</strong><span>不为了增加内容而增加内容，优先处理明确存在的问题</span></li>
-<li><strong>结构优先</strong><span>除了文字本身，也关注条目的章节结构、信息层次与内部关联</span></li>
-<li><strong>可维护性</strong><span>修改不仅考虑当前阅读体验，也考虑其他编辑者今后的维护成本</span></li>
-<li><strong>来源意识</strong><span>对于存在争议、解释空间较大的内容，尽量保留来源与出处，而不是以编辑者自己的判断替代来源</span></li>
-<li><strong>长期积累</strong><span>将维基百科视为一个持续维护的公共知识系统，而不是一次性的写作项目</span></li>
+<li><strong>可驗證性</strong><span>重要事實儘可能建立在可靠、可查證的來源之上</span></li>
+<li><strong>中立性</strong><span>區分資料本身、來源觀點與編輯者的解釋，不主動加入個人立場</span></li>
+<li><strong>克制編輯</strong><span>不為了增加內容而增加內容，優先處理明確存在的問題</span></li>
+<li><strong>結構優先</strong><span>除了文字本身，也關注條目的章節結構、資訊層次與內部關聯</span></li>
+<li><strong>可維護性</strong><span>修改不僅考慮當前閱讀體驗，也考慮其他編輯者今後的維護成本</span></li>
+<li><strong>來源意識</strong><span>對於存在爭議、解釋空間較大的內容，儘量保留來源與出處，而不是以編輯者自己的判斷替代來源</span></li>
+<li><strong>長期積累</strong><span>將維基百科視為一個持續維護的公共知識系統，而不是一次性的寫作項目</span></li>
 </ol>
 </section>
 
 <section class="dossier-section">
-<h2>编辑记录</h2>
-<p class="dossier-muted">具体编辑不在此逐项复制，而主要保留具有长期参考价值的工作。</p>
+<h2>編輯記錄</h2>
+<p class="dossier-muted">具體編輯不在此逐項複製，而主要保留具有長期參考價值的工作。</p>
 <div class="dossier-log">
 <h3>2026</h3>
-<p>持续进行文学及相关条目的维护与整理，并逐步建立个人的条目编辑、资料核查和参考文献整理流程。</p>
-<p>同时开始整理与 Wikimedia 项目相关的长期工作，包括维基百科、Wikisource 和 Wikimedia Commons 等项目之间的资料关联。</p>
+<p>持續進行文學及相關條目的維護與整理，並逐步建立個人的條目編輯、資料核查和參考文獻整理流程。</p>
+<p>同時開始整理與 Wikimedia 項目相關的長期工作，包括維基百科、Wikisource 和 Wikimedia Commons 等項目之間的資料關聯。</p>
 </div>
 </section>
 
 <section class="dossier-section">
-<h2>后续计划</h2>
+<h2>後續計劃</h2>
 <ul class="dossier-list">
-<li>持续维护现有关注条目</li>
-<li>完善文学作品相关条目的来源与结构</li>
-<li>整理值得长期维护的条目列表</li>
-<li>逐步建立更稳定的资料核查流程</li>
-<li>根据实际编辑经验整理 Wikimedia 编辑笔记</li>
-<li>适时参与讨论页及社区维护工作</li>
-<li>保持低频、持续的长期贡献模式</li>
+<li>持續維護現有關注條目</li>
+<li>完善文學作品相關條目的來源與結構</li>
+<li>整理值得長期維護的條目列表</li>
+<li>逐步建立更穩定的資料核查流程</li>
+<li>根據實際編輯經驗整理 Wikimedia 編輯筆記</li>
+<li>適時參與討論頁及社區維護工作</li>
+<li>保持低頻、持續的長期貢獻模式</li>
 </ul>
 </section>
 
-<p class="dossier-closing">这项工作没有预设的完成日期。只要仍然存在值得修正、补充或整理的内容，就会继续进行。</p>
+<p class="dossier-closing">這項工作沒有預設的完成日期。只要仍然存在值得修正、補充或整理的內容，就會繼續進行。</p>
 
 </div>
