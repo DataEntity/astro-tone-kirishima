@@ -7,3 +7,100 @@
 .prose pre { padding: 1rem; overflow-x: auto; border: 1px solid var(--line); background: var(--soft); }
 .prose code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .88em; }
 .prose :not(pre) > code { padding: .1em .3em; background: var(--soft); }
+
+/* Long-running project dossiers (HTML-in-MD) */
+.prose .dossier { margin-top: .5rem; }
+.prose .dossier-lead {
+  margin: 0 0 1.25rem;
+  font-size: 1.22rem;
+  line-height: 1.55;
+  letter-spacing: -.01em;
+}
+.prose .dossier-aside {
+  margin: 0 0 2.5rem;
+  padding: .2rem 0 .2rem 1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--muted);
+}
+.prose .dossier-section {
+  margin: 0;
+  padding: 2rem 0 0;
+  border-top: 1px solid var(--line);
+}
+.prose .dossier-section h2 {
+  margin: 0 0 1rem;
+  font-size: 1.15rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 700;
+}
+.prose .dossier-muted { color: var(--muted); }
+.prose .dossier-list {
+  margin: 1rem 0 1.4rem;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+.prose .dossier-list li {
+  margin: 0;
+  padding: .85rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.prose .dossier-principles {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: principle;
+  border-top: 1px solid var(--line);
+}
+.prose .dossier-principles li {
+  counter-increment: principle;
+  display: grid;
+  grid-template-columns: 2.4rem 1fr;
+  column-gap: .85rem;
+  row-gap: .2rem;
+  margin: 0;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.prose .dossier-principles li::before {
+  content: counter(principle, decimal-leading-zero);
+  grid-row: 1 / span 2;
+  color: var(--accent);
+  font: 700 .8rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .04em;
+  padding-top: .15rem;
+}
+.prose .dossier-principles strong {
+  grid-column: 2;
+  font-size: 1.02rem;
+  letter-spacing: -.01em;
+}
+.prose .dossier-principles span {
+  grid-column: 2;
+  color: var(--muted);
+  font-size: .95rem;
+}
+.prose .dossier-log {
+  margin: 1.25rem 0 0;
+  padding: 1.1rem 0 0;
+  border-top: 1px dashed var(--line);
+}
+.prose .dossier-log h3 {
+  margin: 0 0 .7rem;
+  font-size: 1rem;
+  letter-spacing: .08em;
+  color: var(--accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 700;
+}
+.prose .dossier-log p { margin: .7rem 0; }
+.prose .dossier-closing {
+  margin: 2.5rem 0 0;
+  padding: 1.25rem 0 0;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: .98rem;
+}
