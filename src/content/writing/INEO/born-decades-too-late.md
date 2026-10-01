@@ -9,7 +9,7 @@ tags:
 featured: false
 draft: false
 comments: false
-column: INEO
+column: 潦草的一言与吐槽
 columnOrder: 1
 ---
 
