@@ -11,7 +11,7 @@ tags:
   - politics
   - dictatorship
 featured: false
-draft: true
+draft: false
 comments: false
 column: 席间考
 columnOrder: 1
