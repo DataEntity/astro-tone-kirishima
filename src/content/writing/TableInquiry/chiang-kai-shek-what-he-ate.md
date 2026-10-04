@@ -53,6 +53,8 @@ columnOrder: 1
 
 政治人物的传记通常从战争,会议,政变与死亡写起,但究其本质,生活史也是传记的一种,一个人的生活史也有一种写法,那就是问问他晚饭吃什么.有时候,你会发现一个人离开故乡几十年后,仍然会想吃一根来自家乡的笋.
 
+<!-- 这里还可以加一段,鸡汁芋头,来源里有 -->
+
 [^1]: Ian M. Sullivan, "An Army Rooted in Large-Scale Combat Operations | Part 1: The People's Liberation Army's Combat Experience in the Chinese Civil War, 1946-1949," _Military Review_ Online Exclusive, U.S. Army University Press, <https://www.armyupress.army.mil/Journals/Military-Review/Online-Exclusive/2026-OLE/LSCO-Part-1/>; Part 2: <https://www.armyupress.army.mil/Journals/Military-Review/Online-Exclusive/2026-OLE/LSCO-Part-2/>.
 
 [^2]: Gary J. Bjorge, _Moving the Enemy: Operational Art in the Chinese PLA's Huai Hai Campaign_, Leavenworth Paper No. 22 (Fort Leavenworth, KS: Combat Studies Institute Press, 2004), <https://www.govinfo.gov/content/pkg/GOVPUB-D110-PURL-LPS58634/pdf/GOVPUB-D110-PURL-LPS58634.pdf>. 战役约自 1948-11-06 至 1949-01-10; 文中概括为歼灭约五个军、约五十万人,并认为此役后国民政府难再阻挡共军南渡.
