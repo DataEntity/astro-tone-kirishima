@@ -62,33 +62,20 @@ comments: false
 
 # 外部連結
 
-https://journals.library.brocku.ca/index.php/voixplurielles/en_US/article/view/387
-
-https://tidsskrift.dk/revue_romane/article/download/29118/25847
-
-https://www.persee.fr/doc/mots_0243-6450_1992_num_30_1_1679
-
-https://doi.org/10.3406/mots.1992.1679
-
-https://www.cambridge.org/core/books/abs/being-contemporary-french-literature-culture-and-politics-today/making-letranger-contemporary-kamel-daouds-meursault-contreenquete/C805BB8689D105C6042271D2B12A4303
-
-https://doi.org/10.26522/vp.v8i1.387
-
-https://doi.org/10.1093/acprof:oso/9780198159728.003.0006
-
-https://doi.org/10.1080/03085149600000028
-
-https://doi.org/10.1093/oso/9780198831686.001.0001
-
-https://www.marxists.org/francais/general/camus/Albert%20Camus%20-%20Kabylie.pdf
-
-https://www.eurozine.com/the-stranger-the-mother-and-the-algerian-revolution/
-
-https://news.yale.edu/2016/09/21/book-looking-stranger
-
-https://www.jffp.org/ojs/jffp/article/view/733
-
-https://openurl.ebsco.com/contentitem/doi:10.3366%2Fnfs.2024.0402?id=ebsco:doi:10.3366%2Fnfs.2024.0402&sid=ebsco:plink:crawler
+- [Bousse Allouche, "Albert Camus : colonisateur de bonne volonté ?" (2011). 卡比利報導裡的同情仍帶殖民視線. 期刊頁.](https://journals.library.brocku.ca/index.php/voixplurielles/en_US/article/view/387)
+- [Allouche (2011) 的 DOI.](https://doi.org/10.26522/vp.v8i1.387)
+- [Ghani Merad, "L'Etranger de Camus vu sous un angle psychosociologique" (1975). 把 Meursault 放回 pied-noir 的社會環境. PDF.](https://tidsskrift.dk/revue_romane/article/download/29118/25847)
+- [Lamria Chetouani, "L'étranger d'Albert Camus : une lecture à l'envers du stéréotype arabe" (1992). Arabe 作為集體稱謂, 匿名與準專名. Persée 全文.](https://www.persee.fr/doc/mots_0243-6450_1992_num_30_1_1679)
+- [Chetouani (1992) 的 DOI.](https://doi.org/10.3406/mots.1992.1679)
+- [Alice Kaplan, "Making L'Etranger Contemporary" (2016). Daoud 的反敘事, 以及無名是否在表現社會的種族視線.](https://www.cambridge.org/core/books/abs/being-contemporary-french-literature-culture-and-politics-today/making-letranger-contemporary-kamel-daouds-meursault-contreenquete/C805BB8689D105C6042271D2B12A4303)
+- [Peter Dunwoodie, "A Dream Deferred" (1998). 阿爾及爾學派如何分配敘事注意力. 書章 DOI.](https://doi.org/10.1093/acprof:oso/9780198159728.003.0006)
+- [David A. J. Macey, "A French Algeria" (1996). Lorcin 與卡比爾神話的評述.](https://doi.org/10.1080/03085149600000028)
+- [Dónal Hassett, Mobilizing Memory (2019). 1918-1939 殖民阿爾及利亞的政治語言. DOI.](https://doi.org/10.1093/oso/9780198831686.001.0001)
+- [Albert Camus, Misère de la Kabylie (1939). 卡比利貧困調查的可讀 PDF.](https://www.marxists.org/francais/general/camus/Albert%20Camus%20-%20Kabylie.pdf)
+- [Michael Azar, "The stranger, the mother and the Algerian revolution" (2010). 荒誕主題與殖民批判並存, 並接到他和母親的關係.](https://www.eurozine.com/the-stranger-the-mother-and-the-algerian-revolution/)
+- [Yale News (2016). Kaplan, Looking for "The Stranger": 這本小說如何寫成.](https://news.yale.edu/2016/09/21/book-looking-stranger)
+- [Sarah Horton, "Solidarity and the Absurd in Kamel Daoud's Meursault, contre-enquête" (2016). 無名死者, 荒誕, 與團結.](https://www.jffp.org/ojs/jffp/article/view/733)
+- [Nadia Louar, "Kamel Daoud's Meursault, contre-enquête and Camus's L'Étranger" (2024). 後殖民重寫與去敘事. Nottingham French Studies.](https://doi.org/10.3366/nfs.2024.0402)
 
 [^1]: Dónal Hassett, _Mobilizing Memory: The Great War and the Language of Politics in Colonial Algeria, 1918–1939_ (Oxford: Oxford University Press, 2019), <https://doi.org/10.1093/oso/9780198831686.001.0001>.
 
