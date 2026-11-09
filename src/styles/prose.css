@@ -1,4 +1,5 @@
-.prose { font-size: 1.08rem; }
+/* Long footnote URLs have no wrap points. They widen the scrollport, so the column sits on the left. */
+.prose { font-size: 1.08rem; overflow-wrap: anywhere; }
 .prose h2 { margin-top: 3rem; font-size: 1.8rem; letter-spacing: -.04em; }
 .prose h3 { margin-top: 2rem; font-size: 1.35rem; }
 .prose p, .prose ul, .prose ol, .prose blockquote { margin: 1.2rem 0; }
