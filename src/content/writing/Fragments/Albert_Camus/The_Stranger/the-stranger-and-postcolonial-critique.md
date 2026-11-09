@@ -63,6 +63,26 @@ comments: false
 
 # 外部連結
 
+https://journals.library.brocku.ca/index.php/voixplurielles/en_US/article/view/387
+
+https://tidsskrift.dk/revue_romane/article/download/29118/25847
+
+https://www.persee.fr/doc/mots_0243-6450_1992_num_30_1_1679
+
+https://doi.org/10.3406/mots.1992.1679
+
+https://www.cambridge.org/core/books/abs/being-contemporary-french-literature-culture-and-politics-today/making-letranger-contemporary-kamel-daouds-meursault-contreenquete/C805BB8689D105C6042271D2B12A4303
+
+https://doi.org/10.26522/vp.v8i1.387
+
+https://doi.org/10.1093/acprof:oso/9780198159728.003.0006
+
+https://doi.org/10.1080/03085149600000028
+
+https://doi.org/10.1093/oso/9780198831686.001.0001
+
+https://www.marxists.org/francais/general/camus/Albert%20Camus%20-%20Kabylie.pdf
+
 https://www.eurozine.com/the-stranger-the-mother-and-the-algerian-revolution/
 
 https://news.yale.edu/2016/09/21/book-looking-stranger
