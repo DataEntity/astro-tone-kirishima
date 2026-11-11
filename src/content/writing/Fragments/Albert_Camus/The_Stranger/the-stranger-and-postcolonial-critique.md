@@ -45,7 +45,18 @@ comments: false
 
 <!-- 無名化是一種值得解釋的敘事安排 → 這種敘事安排與 Camus 的殖民地身份及政治立場之間存在什麼關係 → 作者的政治倫理與作品的敘事結構之間是否存在張力? -->
 
-<!-- # 為什麼審判如此關注默爾索,而不是被殺害的阿拉伯人? -->
+# 為什麼審判如此關注默爾索,而不是被殺害的阿拉伯人?
+
+在法庭的審判上,名義上仍然在審判 Meursault 的殺人罪行, 不過實際上正在逐漸把重心漂移到了 Meursault 這個人是否符合社會所認可的道德規範, 並以此不斷延伸(飄移)至對其在葬禮上的冷漠態度. 被殺害的阿拉伯人在這個過程中被淡化. (p. 54-60)
+
+Meursault 的確殺死了一個阿拉伯人, 但在審判過程中, 越來越多的注意力被轉移到其母親的葬禮上, 並逐漸變為了對 Meursault 的人格審判與其母親的葬禮上, 默爾索是否在母親去世時流露出悲傷. 他是否在葬禮上喝咖啡, 抽煙. 他是否在母親去世後的第二天與瑪麗約會, 游泳, 看喜劇電影. 他是否表現出了一個兒子應當具有的哀悼之情. 這些事情逐漸構成了檢察官對 Meursault 的道德指控, 並將法庭上實際關注的問題組合成了一整套生活方式上的罪證. 所以 Meursault 產生了一種奇異的感覺, 檢察官審判的好像是他的靈魂, 而不是殺人行為.
+
+> 检察官谈起了我的灵魂。他说他曾深入探究过我的灵魂，却什么也没有发现。[^7]
+
+Meursault 在法庭上被關注的核心不再是是否殺死一個阿拉伯人, 而是對其母親死亡表現出的態度. 審判仍然在繼續, 但那個阿拉伯人卻越來越模糊, 小說在此前的確提供了部分線索, 他是雷蒙情婦的哥哥, 因為雷蒙虐待自己的妹妹, 與雷蒙發生了衝突, 這能說明這個阿拉伯人不是毫無來由出現在沙灘上的陌生人, 其有社會關係, 也有參與衝突的理由, 但最後這個角色仍然沒有發展成一個真正的人物, 審判在過程中討論了 Meursault 的母親、朋友、情人與生活習慣, 但受害者的形象仍然是空白, 考慮到第一部分的討論, 實際上值得耐人尋味
+
+
+
 <!--
 法庭如何敘述被害者?
 證人如何描述默爾索?
@@ -88,3 +99,5 @@ comments: false
 [^5]: Albert Camus, "Avant-propos," March–April 1958, _Actuelles III_. He argues for a federated Algeria linked to France, and writes that he must not help, even for a second, to bring about the other Algeria.
 
 [^6]: Albert Camus, "Appel pour une trêve civile en Algérie," address given in Algiers, 22 January 1956; reprinted in _Actuelles III_. His note: "Conférence prononcée à Alger, le 22 janvier 1956." The address asks both sides to spare civilians, and he says it is not a political program.
+
+[^7]: Albert Camus, _L'Étranger_ (Paris: Gallimard, Folio), II, § 4, p. 155. "Et j'ai essayé d'écouter encore parce que le procureur s'est mis à parler de mon âme. Il disait qu'il s'était penché sur elle et qu'il n'avait rien trouvé, messieurs les jurés."
