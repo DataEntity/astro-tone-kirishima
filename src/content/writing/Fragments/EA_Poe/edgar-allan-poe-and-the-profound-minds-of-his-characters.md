@@ -2,7 +2,7 @@
 title: "愛倫坡及其深邃人物心智"
 description: "在閱讀Poe的哥特作品時, 我們總會發覺Poe筆下的敘述者常常像竭力表現出自己並無異樣, 但恰恰是這樣, 反而讓我們越發感受到敘述者的不可靠與逐漸顯露的癲狂. 人物往往試圖通過敘述證明自己的理性, 卻在證明的過程中暴露出自身意識的縫隙"
 locale: zh-cn
-publishedAt: 2026-11-11
+publishedAt: 2026-11-12
 author: Kirishima
 tags:
   - Fragments
@@ -43,7 +43,7 @@ comments: false
 
 # 厄舍府的崩塌
 
-<!-- 
+<!--
 維基百科的分析,100%都是我貢獻的內容,特此說明,不存在盜用情況,詳見 [https://github.com/DataEntity/wikipedia-draft/tree/zh/TMoS]
 標題中的「House of Usher」常被批評家視為同時指涉建築與家族，並由此討論本篇的象徵結構。George E. Woodberry指出，小說在藝術結構上近乎完美，細節彼此呼應，並以宅邸與「養育它的家族」（the race that had reared it）之間微妙而不過分的同情為核心之一；最終宅邸與家族一同沉入池沼。[6]Margaret Alterton亦提到，E. T. A. Hoffmann《限嗣繼承》（Das Majorat）中已有以陰鬱宅邸象徵家族因成員死亡而毀滅的構思，可視為相近的文學傳統。[6]與此同時，Richard Wilbur提出身體象徵論：厄舍府即羅德里克·厄舍的身體，其幽暗內部即其幻想心智（visionary Mind）。[6]
 
