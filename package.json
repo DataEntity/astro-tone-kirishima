@@ -2,13 +2,14 @@
   "name": "astro-fourfold",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@10.34.9",
   "type": "module",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
     "validate:content": "node scripts/validate-content.mjs",
-    "build": "npm run validate:content && astro build",
-    "check": "npm run validate:content && astro check",
+    "build": "pnpm validate:content && astro build",
+    "check": "pnpm validate:content && astro check",
     "migrate:tone": "node scripts/migrate-from-tone.mjs",
     "preview": "astro preview"
   },
