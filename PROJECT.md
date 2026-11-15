@@ -170,7 +170,7 @@ flowchart LR
 ```mermaid
 flowchart TD
   A[创建 Markdown 内容] --> B[填写 frontmatter]
-  B --> C{npm run validate:content}
+  B --> C{pnpm validate:content}
   C -- 失败 --> D[修复字段、slug、标签、资源引用]
   D --> B
   C -- 通过 --> E[astro check]
@@ -292,8 +292,8 @@ close        空画廊占位
 
 ## 发布验收标准
 
-- `npm run check` 无错误。
-- `npm run build` 成功。
+- `pnpm check` 无错误。
+- `pnpm build` 成功。
 - 真实域名下 RSS、sitemap、robots 和 canonical 正确。
 - 草稿不出现在任何公开索引。
 - 所有文章有 title、description、日期和可用 slug。

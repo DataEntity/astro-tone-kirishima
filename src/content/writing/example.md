@@ -131,4 +131,4 @@ comments: false
 
 ---
 
-校验命令：`npm run validate:content`（或 `pnpm` 等价）。
+校验命令：`pnpm validate:content`。

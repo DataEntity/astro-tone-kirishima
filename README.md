@@ -20,24 +20,24 @@ Fourfold 把个人博客从“文章列表”抽象成一套可长期维护的�
 - **收藏**：使用 `localStorage` 保存文章 URL；不需要账号，不上传数据。
 - **主题**：CSS variables + 浏览器端明暗主题切换，并尊重系统主题。
 - **发布基础设施**：RSS、sitemap、动态 robots、canonical、Open Graph、文章 `BlogPosting` JSON-LD、404。
-- **内容校验**：`npm run validate:content` 检查必填字段、重复 translationKey、重复文章 URL、无效专栏和资源引用。
+- **内容校验**：`pnpm validate:content` 检查必填字段、重复 translationKey、重复文章 URL、无效专栏和资源引用。
 - **可访问性基础**：语义 HTML、Skip link、键盘焦点样式、按钮 `aria-pressed`。
 - **可插拔边界**：评论、邮件订阅、云端收藏、统计和 CMS 保持为外部接入，不绑定具体供应商。
 
 ## 快速开始
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
 打开 <http://localhost:4321>。生产构建：
 
 ```bash
-npm run validate:content
-npm run check
-npm run build
-npm run preview
+pnpm validate:content
+pnpm check
+pnpm build
+pnpm preview
 ```
 
 部署前设置：
@@ -141,7 +141,7 @@ src/
 
 ### 2. 内容：`src/content/`
 
-删除示例 Markdown，按集合新增自己的内容。所有集合都会校验 frontmatter；不符合 schema 的内容会在 `npm run check` 中报错。
+删除示例 Markdown，按集合新增自己的内容。所有集合都会校验 frontmatter；不符合 schema 的内容会在 `pnpm check` 中报错。
 
 ### 3. 导航：`src/data/navigation.ts`
 
@@ -288,7 +288,7 @@ https://你的用户名.github.io/你的仓库名/
 2. 替换 `public/og-default.svg` 与站点身份。
 3. 删除所有示例内容。
 4. 检查草稿、外链和图片 alt。
-5. 运行 `npm run check && npm run build`。
+5. 运行 `pnpm check && pnpm build`。
 6. 在真实域名上检查 RSS、sitemap、canonical、分享卡片和 404。
 
 ## 命名说明
