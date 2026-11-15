@@ -11,6 +11,8 @@ interface Props {
   height?: number | string;
   /** Spotify theme=0 为深色 */
   theme?: "light" | "dark";
+  /** 外框圆角，单位 px。与 Spotify 卡片对齐时用 12 */
+  radius?: number;
   title?: string;
   class?: string;
 }
@@ -21,6 +23,7 @@ const {
   type = "playlist",
   height = 352,
   theme = "light",
+  radius = 12,
   title = "Spotify playlist",
   class: className = "",
 } = Astro.props;
@@ -52,10 +55,13 @@ const embedSrc = spotifyId
     <div class:list={["spotify-embed", className]}>
       <iframe
         title={title}
-        style={`border-radius:12px;width:100%;height:${height}px;border:0;`}
+        style={`border-radius:${radius}px;width:100%;height:${typeof height === "number" ? `${height}px` : height};border:0;`}
         src={embedSrc}
         width="100%"
         height={height}
+        data-spotify-embed
+        data-spotify-kind={kind}
+        data-spotify-id={spotifyId}
         allowfullscreen
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         loading="lazy"
@@ -63,6 +69,40 @@ const embedSrc = spotifyId
     </div>
   )
 }
+
+<script is:inline>
+  (() => {
+    const isDark = () => {
+      const theme = document.documentElement.dataset.theme;
+      if (theme === "dark") return true;
+      if (theme === "light") return false;
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    };
+
+    const syncSpotifyEmbeds = () => {
+      const dark = isDark();
+      document.querySelectorAll("[data-spotify-embed]").forEach((frame) => {
+        const { spotifyKind, spotifyId } = frame.dataset;
+        if (!spotifyKind || !spotifyId) return;
+        const next = `https://open.spotify.com/embed/${spotifyKind}/${spotifyId}?utm_source=generator${dark ? "&theme=0" : ""}`;
+        if (frame.getAttribute("src") !== next) frame.setAttribute("src", next);
+      });
+    };
+
+    syncSpotifyEmbeds();
+
+    if (!window.__spotifyThemeBound) {
+      window.__spotifyThemeBound = true;
+      new MutationObserver(syncSpotifyEmbeds).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["data-theme"],
+      });
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", syncSpotifyEmbeds);
+    }
+  })();
+</script>
 
 <style>
   .spotify-embed {
