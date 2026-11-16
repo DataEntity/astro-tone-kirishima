@@ -12,7 +12,7 @@ const currentPage = 1;
 const pageEntries = writing.slice(0, site.writingPageSize);
 ---
 <BaseLayout title="写作 · Fourfold" description="全部文章与年份归档。">
-  <header class="page-head container"><p class="eyebrow">Writing</p><h1>把经验变成可以分享的判断。</h1><p>共 {writing.length} 篇，按最近发布或更新排序。</p></header>
+  <header class="page-head container"><p class="eyebrow">Writing</p><h1>閱讀札記、生活瑣事, 和還沒想完的念頭.</h1><p> 共 {writing.length} 篇, 最近寫下或改過的在前</p></header>
   <div class="container years"><span>年份</span>{years.map((year) => <a href={sitePath(`/writing/${year}/`)}>{year}</a>)}</div>
   <section class="container list">{pageEntries.map((entry) => <PostCard entry={entry} />)}</section>
   <div class="container"><Pagination current={currentPage} total={totalPages} base="/writing" /></div>
