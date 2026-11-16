@@ -11,23 +11,24 @@ import SpotifyEmbed from '../content/SpotifyEmbed.astro';
     {site.author.email && <a href={`mailto:${site.author.email}`}>Email <Icon name="arrowUpRight" size="sm" /></a>}
     {site.features.rss && <a href={sitePath('/rss.xml')} data-astro-reload>RSS</a>}
   </div>
-  <small class="footer-copy">© {new Date().getFullYear()} {site.author.name} · <a href={site.license.url}>{site.license.name}</a></small>
-  <div class="footer-player" transition:persist="site-player" transition:animate="none">
-    <SpotifyEmbed
-      src="https://open.spotify.com/embed/playlist/0gRBdtg4DLVym8GQ9Z045j?utm_source=generator"
-      height={152}
-      radius={12}
-      title="MyWebPlayer"
-    />
+  <div class="footer-end">
+    <div class="footer-player" transition:persist="site-player" transition:animate="none">
+      <SpotifyEmbed
+        src="https://open.spotify.com/embed/playlist/0gRBdtg4DLVym8GQ9Z045j?utm_source=generator"
+        height={152}
+        radius={12}
+        title="MyWebPlayer"
+      />
+    </div>
+    <small class="footer-copy">© {new Date().getFullYear()} {site.author.name} · <a href={site.license.url}>{site.license.name}</a></small>
   </div>
 </footer>
 <style>
   .site-footer { display:grid; grid-template-columns:2fr 1fr auto; column-gap:2.5rem; row-gap:.75rem; align-items:start; border-top:1px solid var(--line); margin-top:6rem; padding:2rem 0 3rem; color:var(--muted); font-size:.88rem; }
-  .footer-copy { align-self:end; justify-self:end; text-align:right; }
+  .footer-end { display:flex; flex-direction:column; align-items:flex-end; gap:.45rem; justify-self:end; width:min(100%, 20rem); }
+  .footer-copy { display:block; text-align:right; }
   .footer-player {
-    grid-column: 1 / -1;
-    justify-self: end;
-    width: min(100%, 36rem);
+    width: 100%;
     margin: 0;
     border: 1px solid var(--line);
     border-radius: 12px;
@@ -39,8 +40,9 @@ import SpotifyEmbed from '../content/SpotifyEmbed.astro';
   .footer-links { display:flex; flex-direction:column; gap:.35rem; }
   .site-footer a { color:inherit; }
   @media (max-width: 42rem) {
-    .site-footer { grid-template-columns:1fr; margin-top:4rem; }
-    .footer-copy { justify-self:start; text-align:left; }
-    .footer-player { justify-self:stretch; width:100%; }
+    .site-footer { grid-template-columns:1fr; margin-top:4rem; align-items:start; }
+    .footer-end { align-items:stretch; justify-self:stretch; width:100%; }
+    .footer-copy { text-align:left; }
+    .footer-player { width:100%; }
   }
 </style>
