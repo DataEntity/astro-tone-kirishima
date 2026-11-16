@@ -27,10 +27,17 @@ import Icon from './Icon.astro';
   @media (max-width: 58rem) { .site-header { flex-wrap:wrap; gap:.75rem 1rem; padding:1rem 0; } nav { order:3; flex-basis:100%; overflow-x:auto; flex-wrap:nowrap; padding-bottom:.25rem; } }
 </style>
 <script>
-  document.querySelector('[data-theme-toggle]')?.addEventListener('click', () => {
-    const current = document.documentElement.dataset.theme;
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.dataset.theme = next;
-    try { localStorage.setItem('fourfold-theme', next); } catch { /* storage may be disabled */ }
-  });
+  const bindThemeToggle = () => {
+    const button = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+    if (!button || button.dataset.themeBound === 'true') return;
+    button.dataset.themeBound = 'true';
+    button.addEventListener('click', () => {
+      const current = document.documentElement.dataset.theme;
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = next;
+      try { localStorage.setItem('fourfold-theme', next); } catch { /* storage may be disabled */ }
+    });
+  };
+  bindThemeToggle();
+  document.addEventListener('astro:page-load', bindThemeToggle);
 </script>

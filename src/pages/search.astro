@@ -37,29 +37,35 @@ const matches = (entry: (typeof writing)[number]) =>
   </section></BaseLayout
 >
 <script>
-  const input = document.querySelector<HTMLInputElement>("#search");
-  const items = [...document.querySelectorAll<HTMLElement>("[data-search-item]")];
-  const status = document.querySelector<HTMLElement>("#status");
-  const updateResults = () => {
-    const q = input?.value.trim().toLowerCase() ?? "";
-    let count = 0;
-    items.forEach((item) => {
-      const show = !q || Boolean(item.dataset.text?.toLowerCase().includes(q));
-      item.hidden = !show;
-      if (show) count++;
+  const bindSearch = () => {
+    const input = document.querySelector<HTMLInputElement>("#search");
+    const status = document.querySelector<HTMLElement>("#status");
+    if (!input || input.dataset.searchBound === "true") return;
+    input.dataset.searchBound = "true";
+    const items = [...document.querySelectorAll<HTMLElement>("[data-search-item]")];
+    const updateResults = () => {
+      const q = input.value.trim().toLowerCase();
+      let count = 0;
+      items.forEach((item) => {
+        const show = !q || Boolean(item.dataset.text?.toLowerCase().includes(q));
+        item.hidden = !show;
+        if (show) count++;
+      });
+      if (status) status.textContent = q ? `${count} 个结果` : "输入关键词开始搜索。";
+    };
+    input.addEventListener("input", () => {
+      updateResults();
+      const q = input.value.trim().toLowerCase();
+      const url = new URL(location.href);
+      q ? url.searchParams.set("q", q) : url.searchParams.delete("q");
+      history.replaceState(history.state, "", url);
     });
-    if (status) status.textContent = q ? `${count} 个结果` : "输入关键词开始搜索。";
-  };
-  input?.addEventListener("input", () => {
+    const initialQuery = new URL(location.href).searchParams.get("q") ?? "";
+    if (initialQuery) input.value = initialQuery;
     updateResults();
-    const q = input.value.trim().toLowerCase();
-    const url = new URL(location.href);
-    q ? url.searchParams.set("q", q) : url.searchParams.delete("q");
-    history.replaceState({}, "", url);
-  });
-  const initialQuery = new URL(location.href).searchParams.get("q") ?? "";
-  if (input && initialQuery) input.value = initialQuery;
-  updateResults();
+  };
+  bindSearch();
+  document.addEventListener("astro:page-load", bindSearch);
 </script>
 <style>
   .search-page {
