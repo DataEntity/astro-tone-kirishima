@@ -28,6 +28,7 @@ const writing = defineCollection({
     columnOrder: z.number().optional(),
     minutes: z.number().positive().optional(),
     comments: z.boolean().default(false),
+    textReveal: z.boolean().optional(),
   }),
 });
 
@@ -46,6 +47,7 @@ const projects = defineCollection({
     externalUrl: z.url().optional(),
     repositoryUrl: z.url().optional(),
     tags: z.array(z.string()).default([]),
+    textReveal: z.boolean().optional(),
   }),
 });
 
@@ -59,6 +61,7 @@ const research = defineCollection({
     tags: z.array(z.string()).default([]),
     paperUrl: z.url().optional(),
     codeUrl: z.url().optional(),
+    textReveal: z.boolean().optional(),
   }),
 });
 

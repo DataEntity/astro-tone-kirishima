@@ -30,6 +30,7 @@ export const site = {
     theme: true,
     rss: true,
     share: true,
+    textReveal: true,
     tips: false,
     newsletter: false,
     comments: false,

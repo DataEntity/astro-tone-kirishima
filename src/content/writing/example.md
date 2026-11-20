@@ -42,6 +42,9 @@ draft: true
 # 是否开启该篇评论（站点 features.comments 仍需打开）。默认 false
 comments: false
 
+# 入场标点落定。省略则跟随全域 site.features.textReveal；false 关掉这一篇
+# textReveal: false
+
 # --- 专栏（连续阅读路径）---
 # column 必须与 src/content/columns/*.md 里的 title 完全一致
 # columnOrder 为专栏内顺序（1, 2, 3…）
@@ -90,6 +93,7 @@ comments: false
 | `draft` | 否 | `false` | 草稿 |
 | `minutes` | 否 | — | 阅读分钟 |
 | `comments` | 否 | `false` | 本篇评论开关 |
+| `textReveal` | 否 | — | 省略则跟随全域，`false` 关掉这一篇 |
 | `column` | 否 | — | 专栏 **title** 字符串 |
 | `columnOrder` | 否 | — | 专栏内篇序 |
 | `seoTitle` | 否 | — | SEO 标题 |
@@ -115,11 +119,11 @@ comments: false
 
 ### projects
 
-在 common + `publishedAt` 基础上：`status`（默认 `active`：`active` \| `maintained` \| `archived` \| `paused`）、`type`（默认 `project`）、`externalUrl`、`repositoryUrl`、`tags`。
+在 common + `publishedAt` 基础上：`status`（默认 `active`：`active` \| `maintained` \| `archived` \| `paused`）、`type`（默认 `project`）、`externalUrl`、`repositoryUrl`、`tags`。可选 `textReveal`（省略跟随全域，同 writing）。
 
 ### research
 
-`kind`（默认 `note`）、`version`（默认 `0.1`）、`tags`、`paperUrl`、`codeUrl`。
+`kind`（默认 `note`）、`version`（默认 `0.1`）、`tags`、`paperUrl`、`codeUrl`。可选 `textReveal`（省略跟随全域，同 writing）。
 
 ### photos
 
