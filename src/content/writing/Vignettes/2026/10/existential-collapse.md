@@ -6,6 +6,9 @@ publishedAt: 2026-10-18
 author: Kirishima
 tags:
   - Vignettes
+  - existentialism
+  - death
+  - nihilism
 featured: false
 draft: false
 ---

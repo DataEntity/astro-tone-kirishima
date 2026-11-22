@@ -6,6 +6,9 @@ publishedAt: 2026-04-20
 author: H. P. Lovecraft
 tags:
   - excerpt
+  - H_P_Lovecraft
+  - narrative
+  - death
 featured: false
 draft: false
 ---

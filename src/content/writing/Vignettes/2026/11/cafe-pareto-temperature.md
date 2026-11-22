@@ -6,6 +6,7 @@ publishedAt: 2026-11-01
 author: Kirishima
 tags:
   - Vignettes
+  - food-culture
 featured: false
 draft: false
 ---

@@ -5,6 +5,7 @@ locale: zh-cn
 publishedAt: 2026-03-01
 author: Kirishima
 tags:
+  - Novels
   - threedays
 featured: false
 draft: false

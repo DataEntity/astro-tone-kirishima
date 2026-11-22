@@ -6,6 +6,10 @@ publishedAt: 2026-09-01
 author: Kirishima
 tags:
   - Vignettes
+  - existentialism
+  - philosophy
+  - Tolstoy
+  - death
 featured: false
 draft: false
 ogImage: /assets/photos/bartov_1-20260904_014301.webp

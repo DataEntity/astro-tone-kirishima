@@ -6,6 +6,9 @@ publishedAt: 2026-09-01
 author: Kirishima
 tags:
   - Vignettes
+  - letter
+  - winter
+  - well-wishes
 featured: false
 draft: false
 ogImage: /assets/Xuejinghanlintu.jpg

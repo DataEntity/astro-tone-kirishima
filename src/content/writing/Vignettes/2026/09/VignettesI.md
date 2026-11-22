@@ -6,6 +6,8 @@ publishedAt: 2026-09-07
 author: Kirishima
 tags:
   - Vignettes
+  - friendship
+  - technology
 featured: false
 draft: false
 ogImage: /assets/photos/sz-beraud_-_trois_personnages_dans_un_cafe_vers_1890.webp

@@ -6,6 +6,10 @@ publishedAt: 2026-09-01
 author: Kirishima
 tags:
   - Vignettes
+  - sexuality
+  - boundaries
+  - subjectivity
+  - psychology
 featured: false
 draft: false
 ogImage: /assets/photos/2026-06-18_044257.jpg

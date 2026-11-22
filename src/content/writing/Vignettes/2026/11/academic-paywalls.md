@@ -6,6 +6,8 @@ publishedAt: 2026-11-08
 author: Kirishima
 tags:
   - Vignettes
+  - reading
+  - institutions
 featured: false
 draft: false
 ---

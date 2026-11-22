@@ -6,6 +6,9 @@ publishedAt: 2026-09-20
 author: Kirishima
 tags:
   - Vignettes
+  - memoir
+  - technology
+  - family
 featured: false
 draft: false
 ogImage: /assets/img/20260920045119.jpg

@@ -6,6 +6,9 @@ publishedAt: 2026-09-08
 author: Kirishima
 tags:
   - Vignettes
+  - family
+  - trauma
+  - psychology
 featured: false
 draft: false
 ogImage: /assets/IMG_6196-1-2048x1956.jpeg
