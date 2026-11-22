@@ -1,24 +1,39 @@
 <script>
+  // Work stays capped at MAX_CELLS and at blocks in the viewport plus one screen.
+  // The frame loop reads Flick state and writes mask text or is-set. It does not touch data attributes.
   const DURATION_MS = 1100;
   const FLICK_MS = 42;
   const SETTLE_MS = 110;
+  const MAX_CELLS = 700;
+  const WORD_LIMIT = 24;
   const MARKS = Array.from(".,;:!?'\"()[]{}<>/\\|@#$%^&*-_=+~");
   const CLOSE_CHARS = new Set(Array.from('，。、；：？！…」』】》〉）)]}.,;:!?'));
   const OPEN_CHARS = new Set(Array.from('「『【《〈（([{‘“'));
   const SKIP = 'pre, code, kbd, samp, script, style, svg, math, img, picture, video, audio, iframe, canvas, object, embed, figure, figcaption, table, noscript, button, textarea, select, input, aside, ruby, rt, rp';
   const BLOCK = 'p, h1, h2, h3, h4, h5, h6, li, blockquote';
 
-  type Grapheme = { segment: string; index: number };
   type CellPlan = { char: string; width: number };
   type Piece = { kind: 'text'; value: string } | { kind: 'atom'; cells: CellPlan[] };
   type Replacement = { parent: Node; nodes: Node[]; original: Text };
-  type Session = { article: HTMLElement; timers: number[]; frame: number; restore: () => void };
-  type Flick = { cell: HTMLElement; mask: HTMLElement; settleAt: number; nextFlick: number; mark: string };
+  type Session = { article: HTMLElement; frame: number; restore: () => void };
+  type Sample = { font: string; spacing: number; size: number };
+  type BuiltCell = { cell: HTMLElement; mask: HTMLElement; mark: string };
+  type Flick = {
+    cell: HTMLElement;
+    mask: HTMLElement;
+    settleAt: number;
+    nextFlick: number;
+    mark: string;
+    waiting: boolean;
+  };
+  type Band = 'above' | 'view' | 'overscan' | 'below';
 
   const segmenter = typeof Intl !== 'undefined' && 'Segmenter' in Intl
     ? new Intl.Segmenter(undefined, { granularity: 'grapheme' })
     : null;
 
+  const widthCache = new Map<string, number>();
+  let measureCtx: CanvasRenderingContext2D | null | undefined;
   let session: Session | null = null;
 
   const isSpace = (char: string) => /^\s$/u.test(char);
@@ -30,31 +45,44 @@
     return MARKS[index] ?? '.';
   };
 
-  const graphemeParts = (text: string): Grapheme[] => {
-    if (segmenter) return Array.from(segmenter.segment(text), (part) => ({ segment: part.segment, index: part.index }));
-    const parts: Grapheme[] = [];
-    let index = 0;
-    for (const segment of Array.from(text)) {
-      parts.push({ segment, index });
-      index += segment.length;
-    }
-    return parts;
+  const graphemes = (text: string) => {
+    if (segmenter) return Array.from(segmenter.segment(text), (part) => part.segment);
+    return Array.from(text);
   };
 
-  const measureWidths = (textNode: Text, parts: Grapheme[]) => {
-    const range = document.createRange();
-    const widths: number[] = [];
-    for (const part of parts) {
-      const end = part.index + part.segment.length;
-      if (end > textNode.length) {
-        widths.push(0);
-        continue;
-      }
-      range.setStart(textNode, part.index);
-      range.setEnd(textNode, end);
-      widths.push(range.getBoundingClientRect().width);
+  const measureContext = () => {
+    if (measureCtx !== undefined) return measureCtx;
+    measureCtx = document.createElement('canvas').getContext('2d');
+    return measureCtx;
+  };
+
+  const sampleFor = (el: HTMLElement, samples: Map<HTMLElement, Sample>) => {
+    const known = samples.get(el);
+    if (known) return known;
+    const style = getComputedStyle(el);
+    const spacing = style.letterSpacing === 'normal' ? 0 : Number.parseFloat(style.letterSpacing) || 0;
+    const sample = { font: style.font, spacing, size: Number.parseFloat(style.fontSize) || 16 };
+    samples.set(el, sample);
+    return sample;
+  };
+
+  const glyphWidth = (sample: Sample, segment: string) => {
+    const key = `${sample.spacing}|${sample.font}|${segment}`;
+    const cached = widthCache.get(key);
+    if (cached !== undefined) return cached;
+    const ctx = measureContext();
+    let textWidth = 0;
+    if (ctx) {
+      ctx.font = sample.font;
+      textWidth = ctx.measureText(segment).width;
     }
-    return widths;
+    if (!(textWidth > 0)) {
+      const latin = /^[\u0000-\u00ff]+$/.test(segment);
+      textWidth = sample.size * (latin ? 0.5 : 1);
+    }
+    const width = Math.max(Math.round((textWidth + sample.spacing) * 64) / 64, 1);
+    widthCache.set(key, width);
+    return width;
   };
 
   const shouldStick = (chars: string[], char: string, next: string | undefined) => {
@@ -67,7 +95,8 @@
     return false;
   };
 
-  const planPieces = (parts: Grapheme[], widths: number[]): Piece[] => {
+  const planPieces = (text: string, sample: Sample, budget: { left: number }): Piece[] => {
+    const parts = graphemes(text);
     const pieces: Piece[] = [];
     let atom: CellPlan[] = [];
     let raw = '';
@@ -83,37 +112,42 @@
       atom = [];
     };
     for (let index = 0; index < parts.length; index += 1) {
-      const part = parts[index];
-      if (!part) continue;
-      const char = part.segment;
-      const width = widths[index] ?? 0;
+      const char = parts[index];
+      if (!char) continue;
       if (isSpace(char)) {
         flushAtom();
         raw += char;
         continue;
       }
+      const chars = atom.map((item) => item.char);
+      const next = parts[index + 1];
+      const stick = shouldStick(chars, char, next);
+      const prev = chars[chars.length - 1] ?? '';
+      const breakLongWord = stick && atom.length >= WORD_LIMIT && isAsciiWord(char) && !OPEN_CHARS.has(prev);
+      if (atom.length && (!stick || breakLongWord)) flushAtom();
+      const finishingWord = atom.length > 0 && budget.left > -WORD_LIMIT;
+      if (budget.left <= 0 && !finishingWord) {
+        flushAtom();
+        raw += parts.slice(index).join('');
+        break;
+      }
+      const width = glyphWidth(sample, char);
       if (!(width > 0)) {
         flushAtom();
         raw += char;
         continue;
       }
-      const chars = atom.map((item) => item.char);
-      const next = parts[index + 1]?.segment;
-      const stick = shouldStick(chars, char, next);
-      const prev = chars[chars.length - 1] ?? '';
-      const breakLongWord = stick && atom.length >= 24 && isAsciiWord(char) && !OPEN_CHARS.has(prev);
-      if (atom.length && (!stick || breakLongWord)) flushAtom();
       atom.push({ char, width });
+      budget.left -= 1;
     }
     flushAtom();
     flushRaw();
     return pieces;
   };
 
-  const createCell = (char: string, width: number) => {
+  const createCell = (char: string, width: number): BuiltCell => {
     const cell = document.createElement('span');
     cell.className = 'tr-cell';
-    cell.dataset.phase = 'wait';
     cell.style.width = `${width}px`;
     const real = document.createElement('span');
     real.className = 'tr-real';
@@ -121,14 +155,15 @@
     const mask = document.createElement('span');
     mask.className = 'tr-mask';
     mask.setAttribute('aria-hidden', 'true');
-    mask.dataset.p = pick('');
+    const mark = pick('');
+    mask.textContent = mark;
     cell.append(real, mask);
-    return cell;
+    return { cell, mask, mark };
   };
 
   const renderPieces = (pieces: Piece[]) => {
     const nodes: Node[] = [];
-    const cells: HTMLElement[] = [];
+    const cells: BuiltCell[] = [];
     const fragment = document.createDocumentFragment();
     for (const piece of pieces) {
       if (piece.kind === 'text') {
@@ -138,9 +173,9 @@
         continue;
       }
       const rendered = piece.cells.map((item) => {
-        const cell = createCell(item.char, item.width);
-        cells.push(cell);
-        return cell;
+        const built = createCell(item.char, item.width);
+        cells.push(built);
+        return built.cell;
       });
       const node = rendered.length === 1 ? rendered[0] : document.createElement('span');
       if (node instanceof HTMLElement && rendered.length > 1) {
@@ -162,30 +197,54 @@
     return !!parent.closest(BLOCK);
   };
 
-  const textNodesIn = (root: HTMLElement) => {
-    const nodes: Text[] = [];
+  const forText = (root: HTMLElement, visit: (textNode: Text) => boolean) => {
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
     let current = walker.nextNode();
     while (current) {
-      if (current instanceof Text && eligible(current)) nodes.push(current);
+      if (current instanceof Text && eligible(current) && !visit(current)) return;
       current = walker.nextNode();
     }
-    return nodes;
   };
 
-  const planRoot = (root: HTMLElement) => {
-    const jobs: { textNode: Text; pieces: Piece[] }[] = [];
-    for (const textNode of textNodesIn(root)) {
-      const parts = graphemeParts(textNode.data);
-      const widths = measureWidths(textNode, parts);
-      const pieces = planPieces(parts, widths);
+  const bandOf = (block: HTMLElement, viewBottom: number, limit: number, bands: Map<HTMLElement, Band>) => {
+    const known = bands.get(block);
+    if (known) return known;
+    const rect = block.getBoundingClientRect();
+    const band: Band = rect.bottom <= 0 ? 'above' : rect.top >= limit ? 'below' : rect.top >= viewBottom ? 'overscan' : 'view';
+    bands.set(block, band);
+    return band;
+  };
+
+  const collect = (
+    root: HTMLElement,
+    viewport: boolean,
+    jobs: { textNode: Text; pieces: Piece[] }[],
+    budget: { left: number },
+    samples: Map<HTMLElement, Sample>,
+    bands: Map<HTMLElement, Band>,
+    viewBottom: number,
+    limit: number,
+  ) => {
+    forText(root, (textNode) => {
+      if (budget.left <= 0) return false;
+      const parent = textNode.parentElement;
+      if (!parent) return true;
+      if (viewport) {
+        const block = parent.closest(BLOCK);
+        if (!(block instanceof HTMLElement)) return true;
+        const band = bandOf(block, viewBottom, limit, bands);
+        if (band === 'above') return true;
+        if (band === 'below') return false;
+        if (band === 'overscan' && textNode.data.length > budget.left) return false;
+      }
+      const pieces = planPieces(textNode.data, sampleFor(parent, samples), budget);
       if (pieces.some((piece) => piece.kind === 'atom')) jobs.push({ textNode, pieces });
-    }
-    return jobs;
+      return true;
+    });
   };
 
   const applyJobs = (jobs: { textNode: Text; pieces: Piece[] }[], records: Replacement[]) => {
-    const cells: HTMLElement[] = [];
+    const cells: BuiltCell[] = [];
     for (const job of jobs) {
       const parent = job.textNode.parentNode;
       if (!parent) continue;
@@ -198,8 +257,15 @@
     return cells;
   };
 
+  let queued = 0;
+
+  const cancelQueued = () => {
+    if (!queued) return;
+    cancelAnimationFrame(queued);
+    queued = 0;
+  };
+
   const begin = (article: HTMLElement): Session => {
-    const timers: number[] = [];
     const records: Replacement[] = [];
     let restored = false;
     const restore = () => {
@@ -215,47 +281,52 @@
         for (const node of live) record.parent.removeChild(node);
       }
     };
-    const active: Session = { article, timers, frame: 0, restore };
+    const active: Session = { article, frame: 0, restore };
     article.dataset.textRevealDone = 'true';
     const title = article.querySelector<HTMLElement>('[data-text-reveal-title]');
     const dek = article.querySelector<HTMLElement>('[data-text-reveal-dek]');
     const prose = article.querySelector<HTMLElement>('[data-text-reveal-prose]');
-    const jobs = [
-      ...(title ? planRoot(title) : []),
-      ...(dek ? planRoot(dek) : []),
-      ...(prose ? planRoot(prose) : []),
-    ];
+    const jobs: { textNode: Text; pieces: Piece[] }[] = [];
+    const budget = { left: MAX_CELLS };
+    const samples = new Map<HTMLElement, Sample>();
+    const bands = new Map<HTMLElement, Band>();
+    const viewBottom = window.innerHeight || document.documentElement.clientHeight;
+    const limit = viewBottom > 0 ? viewBottom * 2 : Number.POSITIVE_INFINITY;
+    if (title) collect(title, false, jobs, budget, samples, bands, viewBottom, limit);
+    if (dek) collect(dek, false, jobs, budget, samples, bands, viewBottom, limit);
+    if (prose) collect(prose, true, jobs, budget, samples, bands, viewBottom, limit);
     const cells = applyJobs(jobs, records);
+    if (!cells.length) return active;
     const half = DURATION_MS / 2;
-    const items: Flick[] = [];
-    for (const cell of cells) {
-      const mask = cell.querySelector<HTMLElement>('.tr-mask');
-      if (!mask) continue;
-      items.push({
-        cell,
-        mask,
-        settleAt: half + Math.random() * half,
-        nextFlick: 0,
-        mark: mask.dataset.p ?? '.',
-      });
-    }
+    const items: Flick[] = cells.map((built) => ({
+      cell: built.cell,
+      mask: built.mask,
+      settleAt: half + Math.random() * half,
+      nextFlick: Math.random() * FLICK_MS,
+      mark: built.mark,
+      waiting: true,
+    }));
     const started = performance.now();
     const drive = (now: number) => {
-      if (session !== active || !article.isConnected) return;
+      if (session !== active) return;
+      if (!article.isConnected) {
+        session = null;
+        return;
+      }
       const elapsed = now - started;
       const closing = elapsed >= DURATION_MS;
       for (const item of items) {
-        if (item.cell.dataset.phase !== 'wait') continue;
+        if (!item.waiting) continue;
         if (!closing && elapsed < item.settleAt) {
           if (elapsed >= item.nextFlick) {
             item.mark = pick(item.mark);
-            item.mask.dataset.p = item.mark;
+            item.mask.textContent = item.mark;
             item.nextFlick += FLICK_MS;
             if (item.nextFlick <= elapsed) item.nextFlick = elapsed + FLICK_MS;
           }
           continue;
         }
-        item.cell.dataset.phase = 'set';
+        item.waiting = false;
         item.cell.classList.add('is-set');
       }
       if (!closing || elapsed < DURATION_MS + SETTLE_MS) {
@@ -269,16 +340,19 @@
   };
 
   const teardown = () => {
+    cancelQueued();
     if (!session) return;
     const current = session;
     session = null;
     if (current.frame) cancelAnimationFrame(current.frame);
-    for (const id of current.timers) window.clearTimeout(id);
-    current.timers.length = 0;
-    current.restore();
+    try {
+      current.restore();
+    } catch {
+      /* The page is navigating; a failed restore must not abort the route change. */
+    }
   };
 
-  const start = () => {
+  const reveal = () => {
     const article = document.querySelector('article[data-text-reveal="true"]');
     if (!(article instanceof HTMLElement)) return;
     if (article.dataset.textRevealDone === 'true') return;
@@ -288,11 +362,26 @@
     session = begin(article);
   };
 
+  // Page-load runs after the route swap has committed. Two frames let that
+  // transition paint before the matrix work starts, so the swap itself stays light.
+  const start = () => {
+    if (session && !session.article.isConnected) teardown();
+    if (queued || session) return;
+    queued = requestAnimationFrame(() => {
+      queued = requestAnimationFrame(() => {
+        queued = 0;
+        try {
+          reveal();
+        } catch {
+          teardown();
+        }
+      });
+    });
+  };
+
   start();
   document.addEventListener('astro:page-load', start);
-  document.addEventListener('astro:after-swap', start);
   document.addEventListener('astro:before-preparation', teardown);
-  document.addEventListener('astro:before-swap', teardown);
 </script>
 
 <style is:global>
@@ -332,9 +421,6 @@
     user-select: none;
     -webkit-user-select: none;
     white-space: pre;
-  }
-  article[data-text-reveal='true'] .tr-mask::before {
-    content: attr(data-p);
   }
   article[data-text-reveal='true'] .tr-cell.is-set .tr-mask,
   article[data-text-reveal='true'] .tr-cell.is-snap .tr-mask {
