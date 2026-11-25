@@ -11,7 +11,19 @@ const { title, description, image, canonical, type, structuredData } = Astro.pro
   <head>
     <ClientRouter />
     <SEO title={title} description={description} image={image} canonical={canonical} type={type} structuredData={structuredData} />
-    <script is:inline>try { document.documentElement.dataset.theme = localStorage.getItem('fourfold-theme') || 'system'; } catch { document.documentElement.dataset.theme = 'system'; }</script>
+    <script is:inline>
+      try {
+        document.documentElement.dataset.theme = localStorage.getItem('fourfold-theme') || 'system';
+      } catch {
+        document.documentElement.dataset.theme = 'system';
+      }
+      // ClientRouter replaces <html> attributes from the next page, which has no data-theme.
+      // Copy the current choice onto the incoming document so light mode survives navigation.
+      document.addEventListener('astro:before-swap', (event) => {
+        const theme = document.documentElement.dataset.theme;
+        if (theme) event.newDocument.documentElement.dataset.theme = theme;
+      });
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">跳到正文</a>
