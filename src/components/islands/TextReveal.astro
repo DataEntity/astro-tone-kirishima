@@ -6,7 +6,7 @@
   const SETTLE_MS = 110;
   const MAX_CELLS = 700;
   const WORD_LIMIT = 24;
-  const MARKS = Array.from(".,;:!?'\"()[]{}<>/\\|@#$%^&*-_=+~");
+  const MARKS = Array.from('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
   const CLOSE_CHARS = new Set(Array.from('，。、；：？！…」』】》〉）)]}.,;:!?'));
   const OPEN_CHARS = new Set(Array.from('「『【《〈（([{‘“'));
   const SKIP = 'pre, code, kbd, samp, script, style, svg, math, img, picture, video, audio, iframe, canvas, object, embed, figure, figcaption, table, noscript, button, textarea, select, input, aside, ruby, rt, rp';
@@ -395,6 +395,7 @@
     letter-spacing: 0;
     white-space: pre;
     text-align: start;
+    overflow: hidden;
   }
   article[data-text-reveal='true'] .tr-atom {
     display: inline;
@@ -415,12 +416,24 @@
     left: 50%;
     bottom: 0;
     transform: translateX(-50%);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.86em;
+    font-weight: 500;
+    line-height: 1;
     letter-spacing: 0;
-    color: var(--muted);
+    color: #2c6b40;
     pointer-events: none;
     user-select: none;
     -webkit-user-select: none;
     white-space: pre;
+  }
+  :root[data-theme='dark'] article[data-text-reveal='true'] .tr-mask {
+    color: #9ddeb0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) article[data-text-reveal='true'] .tr-mask {
+      color: #9ddeb0;
+    }
   }
   article[data-text-reveal='true'] .tr-cell.is-set .tr-mask,
   article[data-text-reveal='true'] .tr-cell.is-snap .tr-mask {
