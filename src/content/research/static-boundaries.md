@@ -6,7 +6,7 @@ publishedAt: 2026-08-20
 kind: note
 version: "0.1"
 tags: [静态站点, 架构, Astro]
-draft: false
+draft: true
 ---
 
 静态站点非常适合个人出版：页面、RSS、站点地图和搜索索引都可以在构建期生成。主题、收藏和复制链接则可以作为浏览器端的小型交互。

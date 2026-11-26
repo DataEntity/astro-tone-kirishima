@@ -17,7 +17,7 @@ export async function getStaticPaths() {
 }
 const { pageEntries, totalPages, currentPage } = Astro.props;
 ---
-<BaseLayout title={`写作 · 第 ${currentPage} 页 · Fourfold`} description="全部文章与年份归档。">
+<BaseLayout title={`写作 · 第 ${currentPage} 页 · Aeschion`} description="全部文章与年份归档。">
   <header class="page-head container"><p class="eyebrow">Writing</p><h1>写作 · 第 {currentPage} 页</h1><p>按最近发布或更新排序。</p></header>
   <section class="container list">{pageEntries.map((entry: any) => <PostCard entry={entry} />)}</section>
   <div class="container"><Pagination current={currentPage} total={totalPages} base="/writing" /></div>

@@ -40,7 +40,7 @@ const research = byDate(await getPublishedCollection("research")).slice(0, 2);
     }
     <p class="eyebrow sub">最近更新</p><div class="list">{recent.map((entry) => <PostCard entry={entry} />)}</div>
   </section>
-  <section class="container split">
+  <section class:list={["container split", { solo: research.length === 0 }]}>
     <div>
       <div class="section-heading">
         <h2><span>02 /</span> 项目</h2><a href={sitePath("/projects/")}
@@ -59,14 +59,19 @@ const research = byDate(await getPublishedCollection("research")).slice(0, 2);
         ))
       }
     </div>
-    <div>
-      <div class="section-heading">
-        <h2><span>03 /</span> 研究</h2><a href={sitePath("/research/")}
-          >查看全部 <Icon name="arrowRight" size="sm" /></a>
-      </div>{
-        research.map((entry) => (
-          <article>
-            <>
+    {
+      research.length > 0 && (
+        <div>
+          <div class="section-heading">
+            <h2>
+              <span>03 /</span> 研究
+            </h2>
+            <a href={sitePath("/research/")}>
+              查看全部 <Icon name="arrowRight" size="sm" />
+            </a>
+          </div>
+          {research.map((entry) => (
+            <article>
               <p class="eyebrow">
                 {entry.data.kind} · v{entry.data.version}
               </p>
@@ -74,14 +79,14 @@ const research = byDate(await getPublishedCollection("research")).slice(0, 2);
                 <a href={researchPath(entry)}>{entry.data.title}</a>
               </h3>
               <p>{entry.data.description}</p>
-            </>
-          </article>
-        ))
-      }
-    </div>
+            </article>
+          ))}
+        </div>
+      )
+    }
   </section>
   <section class="start container">
-    <p class="eyebrow">04 / 从这里开始</p><h2>不确定从哪里读起？</h2><p>按问题、主题和阅读顺序找到适合自己的入口。</p><a
+    <p class="eyebrow">03 / 从这里开始</p><h2>不确定从哪里读起？</h2><p>按问题、主题和阅读顺序找到适合自己的入口。</p><a
       href={sitePath("/start/")}>打开阅读地图 <Icon name="arrowRight" size="sm" /></a>
   </section>
 </BaseLayout>
@@ -116,6 +121,9 @@ const research = byDate(await getPublishedCollection("research")).slice(0, 2);
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 4rem;
+  }
+  .split.solo {
+    grid-template-columns: 1fr;
   }
   .split article {
     border-bottom: 1px solid var(--line);

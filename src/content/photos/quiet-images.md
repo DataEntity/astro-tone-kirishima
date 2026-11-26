@@ -10,7 +10,7 @@ photos:
     caption: "示例图像，可替换为自己的照片。"
   - src: /og-default.svg
     alt: "抽象的四象限图形"
-draft: false
+draft: true
 ---
 
 影像页面适合收录精选系列，而不是把所有图片变成无限滚动的信息流。
