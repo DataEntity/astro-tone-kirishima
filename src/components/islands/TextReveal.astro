@@ -6,7 +6,8 @@
   const SETTLE_MS = 110;
   const MAX_CELLS = 700;
   const WORD_LIMIT = 24;
-  const MARKS = Array.from('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
+  const HALF_MARKS = Array.from('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
+  const FULL_MARKS = Array.from('ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ０１２３４５６７８９');
   const CLOSE_CHARS = new Set(Array.from('，。、；：？！…」』】》〉）)]}.,;:!?'));
   const OPEN_CHARS = new Set(Array.from('「『【《〈（([{‘“'));
   const SKIP = 'pre, code, kbd, samp, script, style, svg, math, img, picture, video, audio, iframe, canvas, object, embed, figure, figcaption, table, noscript, button, textarea, select, input, aside, ruby, rt, rp';
@@ -17,13 +18,14 @@
   type Replacement = { parent: Node; nodes: Node[]; original: Text };
   type Session = { article: HTMLElement; frame: number; restore: () => void };
   type Sample = { font: string; spacing: number; size: number };
-  type BuiltCell = { cell: HTMLElement; mask: HTMLElement; mark: string };
+  type BuiltCell = { cell: HTMLElement; mask: HTMLElement; mark: string; wide: boolean };
   type Flick = {
     cell: HTMLElement;
     mask: HTMLElement;
     settleAt: number;
     nextFlick: number;
     mark: string;
+    wide: boolean;
     waiting: boolean;
   };
   type Band = 'above' | 'view' | 'overscan' | 'below';
@@ -39,10 +41,13 @@
   const isSpace = (char: string) => /^\s$/u.test(char);
   const isAsciiWord = (char: string) => /^[A-Za-z0-9]$/.test(char);
 
-  const pick = (previous: string) => {
-    let index = Math.floor(Math.random() * MARKS.length);
-    if (MARKS.length > 1 && MARKS[index] === previous) index = (index + 1) % MARKS.length;
-    return MARKS[index] ?? '.';
+  const isWide = (char: string) => (char.codePointAt(0) ?? 0) > 0xff;
+
+  const pick = (previous: string, wide: boolean) => {
+    const marks = wide ? FULL_MARKS : HALF_MARKS;
+    let index = Math.floor(Math.random() * marks.length);
+    if (marks.length > 1 && marks[index] === previous) index = (index + 1) % marks.length;
+    return marks[index] ?? (wide ? 'Ａ' : 'A');
   };
 
   const graphemes = (text: string) => {
@@ -155,10 +160,12 @@
     const mask = document.createElement('span');
     mask.className = 'tr-mask';
     mask.setAttribute('aria-hidden', 'true');
-    const mark = pick('');
+    const wide = isWide(char);
+    if (wide) cell.classList.add('is-wide');
+    const mark = pick('', wide);
     mask.textContent = mark;
     cell.append(real, mask);
-    return { cell, mask, mark };
+    return { cell, mask, mark, wide };
   };
 
   const renderPieces = (pieces: Piece[]) => {
@@ -297,15 +304,34 @@
     if (prose) collect(prose, true, jobs, budget, samples, bands, viewBottom, limit);
     const cells = applyJobs(jobs, records);
     if (!cells.length) return active;
-    const half = DURATION_MS / 2;
     const items: Flick[] = cells.map((built) => ({
       cell: built.cell,
       mask: built.mask,
-      settleAt: half + Math.random() * half,
+      settleAt: DURATION_MS,
       nextFlick: Math.random() * FLICK_MS,
       mark: built.mark,
+      wide: built.wide,
       waiting: true,
     }));
+    const rows = new Map<number, Flick[]>();
+    for (const item of items) {
+      const top = Math.round(item.cell.offsetTop);
+      const row = rows.get(top);
+      if (row) row.push(item);
+      else rows.set(top, [item]);
+    }
+    const lines = [...rows.keys()].sort((a, b) => a - b).map((top) => rows.get(top) ?? []);
+    const lead = 200;
+    const usable = DURATION_MS - lead;
+    const lineCount = Math.max(lines.length, 1);
+    lines.forEach((line, lineIndex) => {
+      const start = lead + (lineIndex / lineCount) * usable * 0.7;
+      const sweep = Math.min(240, usable * 0.35);
+      line.forEach((item, index) => {
+        const across = line.length <= 1 ? 0 : index / (line.length - 1);
+        item.settleAt = Math.min(DURATION_MS, start + across * sweep);
+      });
+    });
     const started = performance.now();
     const drive = (now: number) => {
       if (session !== active) return;
@@ -319,7 +345,7 @@
         if (!item.waiting) continue;
         if (!closing && elapsed < item.settleAt) {
           if (elapsed >= item.nextFlick) {
-            item.mark = pick(item.mark);
+            item.mark = pick(item.mark, item.wide);
             item.mask.textContent = item.mark;
             item.nextFlick += FLICK_MS;
             if (item.nextFlick <= elapsed) item.nextFlick = elapsed + FLICK_MS;
@@ -408,40 +434,40 @@
   article[data-text-reveal='true'] .tr-cell.is-snap .tr-real {
     color: inherit;
   }
-  article[data-text-reveal='true'] .tr-cell.is-set .tr-real {
-    animation: tr-land 110ms cubic-bezier(0.2, 0.85, 0.2, 1) both;
-  }
   article[data-text-reveal='true'] .tr-mask {
     position: absolute;
     left: 50%;
     bottom: 0;
     transform: translateX(-50%);
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    font-size: 0.86em;
+    font-family: inherit;
+    font-size: 1em;
     font-weight: 500;
     line-height: 1;
     letter-spacing: 0;
-    color: #2c6b40;
+    color: #24382c;
     pointer-events: none;
     user-select: none;
     -webkit-user-select: none;
     white-space: pre;
   }
+  article[data-text-reveal='true'] .tr-cell.is-wide .tr-mask {
+    transform: translateX(-50%) scaleX(1.65);
+    transform-origin: center bottom;
+  }
+  article[data-text-reveal='true'] .tr-cell:not(.is-wide) .tr-mask {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
   :root[data-theme='dark'] article[data-text-reveal='true'] .tr-mask {
-    color: #9ddeb0;
+    color: #8aa894;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme='light']) article[data-text-reveal='true'] .tr-mask {
-      color: #9ddeb0;
+      color: #8aa894;
     }
   }
   article[data-text-reveal='true'] .tr-cell.is-set .tr-mask,
   article[data-text-reveal='true'] .tr-cell.is-snap .tr-mask {
     display: none;
-  }
-  @keyframes tr-land {
-    from { transform: translateY(0.12em); }
-    to { transform: translateY(0); }
   }
   @media (prefers-reduced-motion: reduce) {
     article[data-text-reveal='true'] .tr-real {
